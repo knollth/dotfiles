@@ -1,0 +1,132 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 34,
+  "spacing": 0,
+  "modules-left": [
+    "sway/workspaces"
+    // "bluetooth",
+    // "cpu",
+    // "memory",
+    //"backlight",
+  ],
+  "modules-center": ["clock"],
+  "modules-right": [
+    "backlight",
+    //"bluetooth",
+    //"network",
+    "pulseaudio",
+    "sway/language",
+    "cpu",
+    "memory",
+    "battery",
+    "tray",
+  ],
+  "tray": {
+    "icon-size": 24,
+    "spacing": 10,
+  },
+  "sway/language": {
+    //"format": "<span font='14'> </span> {short}",
+    "format": "<span font='14'>󰌌 </span>{short}  ",
+    //"format": "{short}",
+
+  },
+  "clock": {
+    "format": "{:%b %d   %I:%M}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format-alt": "{:%a %b %d %Y   %I:%M %p}",
+    "interval": 1,
+  },
+  "window": {
+    "format": "{}",
+    // "format-alt": "{app_id}",
+    "tooltip": false, // Optional: show the window title as a tooltip
+  },
+  "cpu": {
+    "format": " <span font='14'> </span>{usage}%",
+    "format-alt": " <span font='14'> </span>{usage}%",
+    "tooltip": false,
+    "interval": 1,
+  },
+  "memory": {
+    "states": {
+      "c": 69, // critical
+      "h": 55, // high
+      "m": 30, // medium
+    },
+    "interval": 1,
+    "format": "",
+    //"format-alt": "󰾆  {used:0.1f} GiB",
+    //"format-alt-m": "󰾅  {used:0.1f} GiB",
+    //"format-alt-h": "󰓅  {used:0.1f} GiB",
+     "format-alt": "<span font='14'>mem:</span>{percentage}%  ",
+     "format": "󰾆 {percentage}%",
+     "format-m": "󰾅 {percentage}%",
+     "format-h": "󰓅 {percentage}%",
+     "format-c": "  {percentage}%",
+    //"format-alt-c": "  {used:0.1f} GiB",
+     //"format-alt": "󰾆  {percentage}%",
+     "format-alt-m": "󰾅  {percentage}%  ",
+     "format-alt-h": "󰓅  {percentage}%  ",
+     "format-alt-c": "  {percentage}%  ",
+    "max-length": 10,
+    "tooltip": false,
+  },
+  "temperature": {
+    "format": "<span font='14'> </span> {}°",
+    "interval": 10,
+  },
+  "backlight": {
+    // "device": "acpi_video1",
+    //"format": "",
+    "format": "<span font='14'>{icon}</span> ",
+    "format-alt": "<span font='14'>{icon}</span> {percent}%",
+    "format-icons": ["", "", "", "", "", "", "", "", ""],
+  },
+  "battery": {
+    "interval": 1,
+    "states": {
+      // "good": 95,
+      "warning": 40,
+      "critical": 30,
+    },
+    "format-alt": "<span font='14'>{icon}</span>",
+    "format": "<span font='14'>{icon}</span> {capacity}%",
+    "format-full": "<span font='14'>{icon}</span> {capacity}%",
+    "format-charging": "<span font='14'>󰂄</span> {capacity}%",
+    "format-plugged": "<span font='14'>󰂄</span>  ",
+    "format-icons": ["󰁺", "󰁼", "󰁾", "󰂀", "󰂂"],
+    // "format-icons": ["", "", "", "", ""],
+  },
+  "network": {
+    "format-wifi": "<span font='10'>{icon}</span>",
+    "format-ethernet": "<span font='14'>󰈀</span>",
+    "format-disconnected": "<span font='14'>󰤭</span>",
+    "format-alt": "{bandwidthDownBytes}",
+    "interval": 1,
+    "format-icons": ["", "", "", "", ""],
+  },
+  "pulseaudio": {
+    "format-alt": "<span font='14'>{icon}</span>  ",
+    "format": "<span font='14'>{icon}</span>{volume}%   ",
+    "format-muted": "<span font='14'>󰝟</span>",
+    "format-source": "{volume}% ",
+    "format-source-muted": "",
+    "format-icons": {
+      // "headphone": " ",
+      // "hands-free": " ",
+      // "headset": " ",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["󰖀 ", "󰕾 "],
+    },
+  },
+  "bluetooth": {
+    "format": "<span font='12'></span>",
+    "format-disabled": "<span font='12'>󰂲</span>",
+    "format-connected": "<span font='12'>󰂱</span>",
+    // "on-click": "blueberry",
+  },
+}
