@@ -7,7 +7,7 @@ fpath+=~/.zfunc
 
 # aliases
 alias uni-push="rclone sync -v $UNI/ drive:/Studium"
-alias uni-pull="rclone sync -v drive:/ $UNI"
+alias uni-pull="rclone sync -v drive:/Studium $UNI"
 alias zath="zathura --fork"
 alias nvim="hx"
 
