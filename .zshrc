@@ -1,3 +1,6 @@
+autoload -U bashcompinit
+bashcompinit
+
 [ -f $HOME/.profile ] && source $HOME/.profile
 
 source <(fzf --zsh)
