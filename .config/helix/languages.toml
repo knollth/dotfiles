@@ -1,19 +1,23 @@
-# in <config_dir>/helix/languages.toml
+# ~/.config/helix/languages.toml
 
 [[language]]
 name = "bash"
 auto-format = true
-formatter.command = "shfmt"
+formatter = { command = "shfmt" }
 
 [[language]]
 name = "c"
 auto-format = true
+formatter = { command = "clang-format", args = ["--style=LLVM"] }
+language-servers = ["clangd"]
 
-[language-server.clangd]
-command = "clangd"
+[[language]]
+name = "cpp"
+auto-format = true
+formatter = { command = "clang-format", args = ["--style=LLVM"] }
+language-servers = ["clangd"]
 
 [[language]]
 name = "typst"
-
 auto-format = true
-formatter.command = "typstyle"
+formatter = { command = "typstyle" }
