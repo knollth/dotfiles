@@ -1,0 +1,4 @@
+Shift+k -> show diagnostics (LSP Hover to see for example type)
+
+<C-w>d show diagnostics at cursor 
+

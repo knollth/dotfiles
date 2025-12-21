@@ -1,4 +1,18 @@
 # ~/.config/helix/languages.toml
+#
+#
+[[language]]
+name = "haskell"
+scope = "source.haskell"
+roots = ["*.cabal", "cabal.project", "hie.yaml"]
+language-servers = [ "hls" ]
+indent = { tab-width = 2, unit = "  " }
+
+[language-server.hls]
+command = "haskell-language-server-wrapper"
+args = ["--lsp"]
+config = { formattingProvider = "ormolu" } # The standard formatter
+
 
 [[language]]
 name = "bash"
@@ -14,10 +28,31 @@ language-servers = ["clangd"]
 [[language]]
 name = "cpp"
 auto-format = true
-formatter = { command = "clang-format", args = ["--style=LLVM"] }
+formatter = { command = "clang-format" } 
 language-servers = ["clangd"]
+
+[[language]]
+name="rust"
+auto-format = true
+language-servers = ["rust-analyzer"]
 
 [[language]]
 name = "typst"
 auto-format = true
-formatter = { command = "typstyle" }
+formatter.command = "typstyle" 
+language-servers = ["tinymist"]
+
+[language-server.clangd]
+command = "clangd"
+args = [
+  "--query-driver=/usr/bin/clang++*",
+  "--background-index",
+  "--header-insertion=iwyu",
+  "--completion-style=detailed",
+]
+
+[language-server.tinymist]
+command = "tinymist"
+
+[language-server.rust-analyzer]
+command = "rust-analyzer"

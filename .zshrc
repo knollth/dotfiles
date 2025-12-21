@@ -24,15 +24,21 @@ alias cspush="rclone sync $RCLONE_FLAGS $UNI/$CURSEM/ drive:/Studium/$CURSEM"
 alias cspull="rclone sync $RCLONE_FLAGS drive:/Studium/$CURSEM $UNI/$CURSEM"
 alias cscheck="rclone check $RCLONE_FLAGS $UNI/$CURSEM drive:/Studium/$CURSEM"
 
-alias oass='typst watch $(pwd)/Ausarbeitung/ausarbeitung.typ & xdg-open $(pwd)/Ausarbeitung/ausarbeitung.pdf & xdg-open $(pwd)/Angabe.pdf & wait &'
+oass() {
+	local cwd="$(pwd)"
+	local in="$cwd/Ausarbeitung/main.typ"
+	local out="$cwd/Ausarbeitung/$(basename "$cwd").pdf"
+	typst watch $in $out --open
+	xdg-open "$cwd/Angabe.pdf" && cd $cwd/Ausarbeitung$
+	wait
+}
+alias initass='cp -r ../Template ./Ausarbeitung'
+alias hxass='hx ./Ausarbeitung/main.typ'
 
 alias zath="zathura --fork"
-alias nvim="hx"
 alias dbe="distrobox enter"
 alias lsa="ls -a"
-
-
-
+alias vim="nvim"
 
 # BEGIN opam configuration
 # This is useful if you're using opam as it adds:
@@ -44,3 +50,7 @@ alias lsa="ls -a"
 
 autoload -U compinit
 compinit
+
+. "$HOME/.local/bin/env"
+
+[ -f "/home/tom/.ghcup/env" ] && . "/home/tom/.ghcup/env" # ghcup-env
