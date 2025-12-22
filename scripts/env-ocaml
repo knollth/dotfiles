@@ -1,0 +1,22 @@
+OCAML_VERSION="${1:-$OCAML_VERSION}"
+local BASE_PATH="/home/tom/.opam/$OCAML_VERSION"
+
+if [ -d "$BASE_PATH" ]; then
+    export PATH="$BASE_PATH/bin:$PATH" 
+    export OPAM_SWITCH_PREFIX="$BASE_PATH" 
+
+    export MANPATH="$MANPATH:$BASE_PATH/man" 
+
+    export OCAML_TOPLEVEL_PATH="$BASE_PATH/lib/toplevel" 
+    export OCAMLTOP_INCLUDE_PATH="$BASE_PATH/lib/toplevel"
+
+    if [ -d "$BASE_PATH/lib/stublibs" ]; then
+        export CAML_LD_LIBRARY_PATH="$BASE_PATH/lib/stublibs:$CAML_LD_LIBRARY_PATH"
+    fi
+
+    echo "🐫 OCaml $OCAML_VERSION environment loaded." 
+else
+    echo "Error: OCaml version $OCAML_VERSION not found in ~/.opam"
+fi
+
+unset -f env-ocaml
