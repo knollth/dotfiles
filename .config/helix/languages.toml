@@ -1,6 +1,17 @@
 # ~/.config/helix/languages.toml
-#
-#
+[[language]]
+name = "python"
+language-servers = ["basedpyright", "ruff"]
+auto-format = true
+
+[language-server.basedpyright]
+command = "basedpyright-langserver"
+args = ["--stdio"]
+
+[language-server.ruff]
+command = "ruff"
+args = ["server", "--preview"]
+
 [[language]]
 name = "haskell"
 scope = "source.haskell"
@@ -20,6 +31,23 @@ auto-format = true
 formatter = { command = "shfmt" }
 
 [[language]]
+name="rust"
+auto-format = true
+language-servers = ["rust-analyzer"]
+
+[language-server.rust-analyzer]
+command = "rust-analyzer"
+
+[[language]]
+name = "typst"
+auto-format = true
+formatter.command = "typstyle" 
+language-servers = ["tinymist"]
+
+[language-server.tinymist]
+command = "tinymist"
+
+[[language]]
 name = "c"
 auto-format = true
 formatter = { command = "clang-format", args = ["--style=LLVM"] }
@@ -31,17 +59,6 @@ auto-format = true
 formatter = { command = "clang-format" } 
 language-servers = ["clangd"]
 
-[[language]]
-name="rust"
-auto-format = true
-language-servers = ["rust-analyzer"]
-
-[[language]]
-name = "typst"
-auto-format = true
-formatter.command = "typstyle" 
-language-servers = ["tinymist"]
-
 [language-server.clangd]
 command = "clangd"
 args = [
@@ -50,9 +67,3 @@ args = [
   "--header-insertion=iwyu",
   "--completion-style=detailed",
 ]
-
-[language-server.tinymist]
-command = "tinymist"
-
-[language-server.rust-analyzer]
-command = "rust-analyzer"

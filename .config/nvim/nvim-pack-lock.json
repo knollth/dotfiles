@@ -1,6 +1,6 @@
 {
   "plugins": {
-    "mini.pairs": {
+   "mini.pairs": {
       "rev": "d5a29b6254dad07757832db505ea5aeab9aad43a",
       "src": "https://github.com/echasnovski/mini.pairs"
     },

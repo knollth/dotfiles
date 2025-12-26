@@ -35,4 +35,4 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-vim.opt.completeopt:append('noselect') -- show completion menu but don't automatically select first item, for lsp autocomplete (see lua/lsp.lua)
+vim.opt.completeopt:append('noselect','menuone','noinsert') -- show completion menu but don't automatically select first item, for lsp autocomplete (see lua/lsp.lua)
