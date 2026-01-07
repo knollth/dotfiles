@@ -1,0 +1,58 @@
+;;; languages.el --- Typst-specific configuration
+
+(setq treesit-language-source-alist
+      '((typst "https://github.com/uben0/tree-sitter-typst")
+	(python "https://github.com/tree-sitter/tree-sitter-python")
+	(julia "https://github.com/tree-sitter/tree-sitter-julia")
+	))
+
+;;python
+(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+(add-hook 'python-ts-mode-hook #'eglot-ensure)
+(defun my/ruff-format ()
+  "Format buffer with ruff."
+  (interactive)
+  (shell-command-on-region (point-min) (point-max)
+                           "ruff format -q --stdin-filename=buffer" nil t))
+
+(use-package typst-ts-mode
+  :vc (:url "https://codeberg.org/meow_king/typst-ts-mode.git")
+  :mode "\\.typ\\'"
+  :hook (typst-ts-mode . eglot-ensure))
+
+(defun my/typst-math-p ()
+  "Check if point is inside Typst math mode."
+  (when (derived-mode-p 'typst-ts-mode)
+    (let ((node (treesit-node-at (point))))
+      (while (and node (not (member (treesit-node-type node) 
+                                     '("math" "equation"))))
+        (setq node (treesit-node-parent node)))
+      node)))
+
+
+(use-package julia-ts-mode
+  :mode "\\.jl\\'"
+  :hook (julia-ts-mode . eglot-ensure))
+
+(use-package eglot
+  :config
+  (add-to-list 'eglot-server-programs
+	       '(typst-ts-mode . ("tinymist" "lsp")))
+  (add-to-list 'eglot-server-programs
+	       '((python-mode python-ts-mode)
+                 . ("basedpyright-langserver" "--stdio"
+                    :initializationOptions
+                    (:python.analysis
+                     (:typeCheckingMode "basic"
+		      :diagnosticMode "openFilesOnly"
+		      :autoSearchPaths t
+		      :useLibraryCodeForTypes t
+		      :reportMissingTypeStubs :json-false
+		      :reportUnknownMemberType :json-false
+		      :reportUnknownArgumentType :json-false)))))
+  (add-to-list 'eglot-server-programs
+             '((julia-mode julia-ts-mode) . ("julia" "--startup-file=no" "--history-file=no" "-e"
+					     "using LanguageServer; runserver()"))))
+  
+
+(provide 'languages)

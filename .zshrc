@@ -33,3 +33,12 @@ alias zath="zathura --fork"
 alias dbe="distrobox enter"
 alias lsa="ls -a"
 alias vim="nvim"
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+path=('/home/tom/.juliaup/bin' $path)
+export PATH
+
+# <<< juliaup initialize <<<

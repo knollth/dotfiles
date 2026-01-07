@@ -1,0 +1,110 @@
+(setq custom-file "~/.emacs.custom.el")
+(setq ring-bell-function 'ignore)
+(menu-bar-mode 0)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+(setq gc-cons-threshold (* 250 1024 1024))
+(add-function :after after-focus-change-function
+  (lambda ()
+    (unless (cl-some #'frame-focus-state (frame-list))
+      (garbage-collect))))
+
+
+(pixel-scroll-precision-mode 1)
+(setq scroll-conservatively 101)
+(setq scroll-margin 3)
+
+(setq inhibit-startup-screen t)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)  
+(add-hook 'text-mode-hook #'display-line-numbers-mode)  
+(add-hook 'conf-mode-hook #'display-line-numbers-mode)  
+(add-hook 'dired-mode-hook #'display-line-numbers-mode)
+;;(global-display-line-numbers-mode)
+(setq display-line-numbers-type 'visual)
+
+;;(setq split-height-threshold nil)
+;;(setq split-width-threshold 0)
+
+;; * Encryption
+(require 'epa-file)
+(epa-file-enable)
+
+;; * setup packages 
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+
+;; * setup use-package *
+(require 'use-package)
+(setq use-package-always-ensure t)
+
+
+
+;; ** themes **
+(use-package cherry-blossom-theme)
+(use-package ef-themes
+  :ensure t
+  :init
+  (ef-themes-take-over-modus-themes-mode 1)
+  :bind
+  (("<f9>" . modus-themes-rotate)
+   ("C-<f9>" . modus-themes-select)
+   ("M-<f9>" . modus-themes-load-random))
+  :config
+  ;; All customisations here.
+  (setq modus-themes-mixed-fonts t)
+  (setq modus-themes-italic-constructs t)
+  (modus-themes-load-theme 'ef-cherie))
+
+;;(load-theme 'gruber-darker t)
+;;(load-theme 'cherry-blossom t)
+
+;; -- Completion
+(add-hook 'prog-mode-hook 'electric-pair-mode)
+;;(use-package completion-preview
+;;  :ensure nil
+;;  :hook ((prog-mode . completion-preview-mode)
+;;	 (typst-ts-mode . completion-preview-mode)
+;;	 (eval-expression-minibuffer-setup . completion-preview-mode)))
+
+(use-package yasnippet
+  :config
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (yas-global-mode 1))
+
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode))
+
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+
+;; Annotations in minibuffer
+(use-package marginalia
+  :ensure t
+  :init (marginalia-mode))
+
+(use-package corfu
+  :ensure t
+  :custom
+  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  :init
+  (global-corfu-mode))
+
+(use-package pdf-tools
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :config
+  (pdf-tools-install))  ; compiles the epdfinfo server
+
+(add-to-list 'load-path "~/.emacs.d/modules")
+(require 'setup-org)
+(require 'setup-fonts)
+(require 'languages)
+(require 'setup-meow)
+(require 'shortcuts)

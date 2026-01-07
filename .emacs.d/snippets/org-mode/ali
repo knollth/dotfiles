@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: multiline aligned math
+# key: ali
+# --
+\[
+\begin{aligned}
+$1 &= $2 \\\\
+$3 &= $4$0
+\end{aligned}
+\]

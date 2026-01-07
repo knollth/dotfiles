@@ -1,0 +1,21 @@
+(use-package org
+  :config
+  (setq org-startup-with-latex-preview nil)
+  (setq org-preview-latex-default-process 'dvisvgm)
+  (plist-put org-format-latex-options :scale 0.5)
+  (plist-put org-format-latex-options :html-scale 1.0)
+  (add-hook 'org-mode-hook #'electric-pair-local-mode)
+  ;;(add-hook 'org-mode-hook 'org-cdlatex-mode)
+  )
+
+(use-package auctex
+  :defer t)
+
+(use-package org-fragtog
+  :hook (org-mode . org-fragtog-mode))
+
+(use-package yasnippet
+  :hook (org-mode . yas-minor-mode)
+  :config
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (yas-reload-all))
