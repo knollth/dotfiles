@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Naturals
+# key: NN
+# condition: (texmathp)
+# --
+\mathbb{N}$0

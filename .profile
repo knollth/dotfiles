@@ -26,3 +26,5 @@ case ":$PATH:" in
 esac
 
 # <<< juliaup initialize <<<
+
+export PATH="$HOME/.elan/bin:$PATH"

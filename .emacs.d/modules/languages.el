@@ -29,6 +29,12 @@
         (setq node (treesit-node-parent node)))
       node)))
 
+(use-package nael
+  :vc (:lisp-dir "nael"
+       :url "https://codeberg.org/mekeor/nael.git")
+  :hook ((nael-mode . eglot-ensure)
+	 (nael-mode . abbrev-mode))
+  )
 
 (use-package julia-ts-mode
   :mode "\\.jl\\'"

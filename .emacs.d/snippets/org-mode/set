@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Set
+# key: set
+# condition: (org-inside-LaTeX-fragment-p)
+# --
+\\{ $1 \mid $2 \\}$0
