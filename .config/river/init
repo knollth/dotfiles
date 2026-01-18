@@ -1,0 +1,100 @@
+#!/bin/sh
+
+# River config - ported from Hyprland
+# Place at ~/.config/river/init (chmod +x)
+
+# Variables
+mod="Super"
+term="ghostty"
+menu="fuzzel"
+#wallpaper="$HOME/Pictures/backgrounds/nautical/wave.png"
+
+# HiDPI scaling (like monitor=["eDP-1,highres,auto,2"])
+# Uncomment and adjust for your display:
+wlr-randr --output eDP-1 --scale 2
+
+# Autostart
+riverctl spawn "yambar"
+riverctl spawn "slstatus -s | dam"
+riverctl spawn "swaybg -i $wallpaper"
+riverctl spawn "blueman-applet"
+riverctl spawn "nm-applet"
+
+# Appearance (no gaps, 2px border like Hyprland)
+riverctl border-width 2
+riverctl border-color-focused 0x93a1a1
+riverctl border-color-unfocused 0x586e75
+riverctl border-color-urgent 0xdc322f
+
+# Input - touchpad natural scroll
+riverctl input pointer-* natural-scroll enabled
+riverctl input pointer-* tap enabled
+riverctl input pointer-* disable-while-typing enabled
+
+# Keyboard layout: us with caps:swapescape
+riverctl keyboard-layout -options caps:swapescape us
+
+# Toggle layout (Super+Shift+Space) - needs toggle-kb-layout script in PATH
+riverctl map normal $mod+Shift Space spawn toggle-kb-layout
+
+# Focus follows cursor
+riverctl focus-follows-cursor normal
+riverctl set-cursor-warp on-focus-change
+
+# Apps
+riverctl map normal $mod Return spawn $term
+riverctl map normal $mod P spawn $menu
+
+# Screenshot
+riverctl map normal $mod+Shift S spawn 'grim -g "$(slurp)" - | wl-copy'
+
+# Session
+riverctl map normal $mod+Shift C close
+riverctl map normal $mod M exit
+
+riverctl map normal $mod V toggle-float
+riverctl map normal $mod Space toggle-fullscreen
+
+riverctl map normal $mod H focus-view left
+riverctl map normal $mod J focus-view down
+riverctl map normal $mod K focus-view up
+riverctl map normal $mod L focus-view right
+
+riverctl map normal $mod+Shift H swap left
+riverctl map normal $mod+Shift J swap down
+riverctl map normal $mod+Shift K swap up
+riverctl map normal $mod+Shift L swap right
+
+for i in $(seq 1 9); do
+    tag=$((1 << (i - 1)))
+    riverctl map normal $mod $i set-focused-tags $tag
+    riverctl map normal $mod+Shift $i set-view-tags $tag
+done
+
+all_tags=$(((1 << 32) - 1))
+riverctl map normal $mod 0 set-focused-tags $all_tags
+riverctl map normal $mod+Shift 0 set-view-tags $all_tags
+
+riverctl map-pointer normal $mod BTN_LEFT move-view
+riverctl map-pointer normal $mod BTN_RIGHT resize-view
+riverctl map-pointer normal $mod+Shift BTN_LEFT resize-view
+
+# Layout adjustments
+riverctl map normal $mod BracketLeft send-layout-cmd rivertile "main-ratio -0.05"
+riverctl map normal $mod BracketRight send-layout-cmd rivertile "main-ratio +0.05"
+riverctl map normal $mod Comma send-layout-cmd rivertile "main-count +1"
+riverctl map normal $mod Period send-layout-cmd rivertile "main-count -1"
+
+riverctl map -repeat normal None XF86MonBrightnessUp spawn "brightnessctl set 5%+"
+riverctl map -repeat normal None XF86MonBrightnessDown spawn "brightnessctl set 5%-"
+
+# Float certain windows
+riverctl rule-add -app-id "pavucontrol" float
+riverctl rule-add -app-id "blueman-manager" float
+riverctl rule-add -app-id "nm-connection-editor" float
+
+# Server-side decorations
+riverctl rule-add ssd
+
+riverctl default-layout rivertile
+rivertile -view-padding 0 -outer-padding 0 -main-ratio 0.55 -main-count 1 &

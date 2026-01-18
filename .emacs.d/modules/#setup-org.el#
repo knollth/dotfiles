@@ -1,6 +1,7 @@
 (unless (package-installed-p 'org-mode)
   (package-vc-install '(org-mode :url "https://code.tecosaur.net/tec/org-mode" :branch "dev")))
 
+
 (use-package org
   :load-path "~/.emacs.d/elpa/org-mode/lisp/"
   :ensure nil
@@ -11,20 +12,19 @@
   :custom
   (org-directory "~/org")
   (org-agenda-files '("~/org/agenda"))
-  (org-agenda-include-diary t)
   (org-refile-targets '((org-agenda-files :maxlevel . 1)))
   (org-refile-use-outline-path 'file)
   (org-outline-path-complete-in-steps nil)
 
    ;; Async latex preview (tecosaur)
   (org-latex-preview-mode-display-live t)
-  (org-latex-preview-mode-update-delay 0.3)
+  (org-latex-preview-mode-update-delay 0.5)
   (org-latex-preview-process-precompile t)
   (org-latex-preview-numbered t)
   (org-latex-preview-appearance-options
       '(:foreground default
         :background default
-        :zoom 1.2   
+        :zoom 1.2   ; <--- This is the multiplier (1.0 is default, 1.2 is 20% bigger)
         :html-scale 1.0))
   
   :config  
@@ -90,6 +90,9 @@
         '((:results . "value"))))
   
 
+(use-package auctex
+  :defer t)
+
 (use-package org-roam
   :ensure t
   :custom
@@ -121,19 +124,9 @@
   (org-roam-db-autosync-mode 1))
 
 (require 'ox-md)
-
-(use-package auctex
-  :defer t)
- (use-package cdlatex
+(use-package cdlatex
   :ensure t
   :hook (org-mode . turn-on-org-cdlatex)
-  :config
-  ;; Add blackboard bold letters (not in CDLaTeX by default)
-  (setq cdlatex-math-symbol-alist
-        '((?N ("\\mathbb{N}"))
-          (?R ("\\mathbb{R}"))
-          (?Z ("\\mathbb{Z}"))
-          (?Q ("\\mathbb{Q}"))
-          (?C ("\\mathbb{C}")))))
- 
+
+  
 (provide 'setup-org)

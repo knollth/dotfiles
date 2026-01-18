@@ -1,6 +1,6 @@
-theme = ayu
+theme = Solarized Dark Higher Contrast
 
-window-decoration=true
+window-decoration=false
 window-theme = ghostty
 
 keybind = alt+enter=new_split:auto

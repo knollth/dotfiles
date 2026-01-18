@@ -7,6 +7,9 @@ export OPAMNOENVNOTICE=true
 
 export PATH="$HOME/.local/bin:$HOME/.opencode/bin:$PATH"
 
+# for fedora (fedora fix for: compile emacs-reader, along with mupdf.pc file)
+export PKG_CONFIG_PATH="/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH"
+
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 [ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 [ -f "/home/tom/.ghcup/env" ] && . "/home/tom/.ghcup/env" # ghcup-env

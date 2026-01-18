@@ -1,5 +1,0 @@
-# name: limit
-# key: lim
-# condition: (my/typst-math-p)
-# --
-lim_(${1:n} -> ${2:oo}) $0

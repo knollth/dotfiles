@@ -8,6 +8,7 @@
 
 ;;python
 (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+
 (add-hook 'python-ts-mode-hook #'eglot-ensure)
 (defun my/ruff-format ()
   "Format buffer with ruff."
@@ -15,10 +16,18 @@
   (shell-command-on-region (point-min) (point-max)
                            "ruff format -q --stdin-filename=buffer" nil t))
 
+(add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+(use-package c-ts-mode
+  :mode ("\\.c\\'" 
+         "\\.h\\'" )
+  :hook (c-ts-mode . eglot-ensure))
+
 (use-package typst-ts-mode
   :vc (:url "https://codeberg.org/meow_king/typst-ts-mode.git")
   :mode "\\.typ\\'"
   :hook (typst-ts-mode . eglot-ensure))
+
+(use-package c-ts-mode)
 
 (defun my/typst-math-p ()
   "Check if point is inside Typst math mode."

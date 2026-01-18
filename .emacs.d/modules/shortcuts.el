@@ -12,6 +12,12 @@
 
 (global-set-key (kbd "C-c e") 'my/dired-emacsd)
 
+(defun my/dired-org ()
+  "Open the org directory (~/org) in Dired."
+  (interactive)
+  (dired "~/org"))
+(global-set-key (kbd "C-c o") 'my/dired-org)
+
 (defun my/dired-uni ()
   "Open dired in the current semester folder defined by $UNI."
   (interactive)
