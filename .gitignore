@@ -1,0 +1,6 @@
+*.o
+# Emacs auto-save files
+\#*#
+
+# Emacs lock files (prevent concurrent editing)
+.#*
