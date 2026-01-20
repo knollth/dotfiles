@@ -1,54 +1,43 @@
 #!/bin/sh
 
-# River config - ported from Hyprland
-# Place at ~/.config/river/init (chmod +x)
-
-# Variables
 mod="Super"
 term="ghostty"
 menu="fuzzel"
 #wallpaper="$HOME/Pictures/backgrounds/nautical/wave.png"
 
-# HiDPI scaling (like monitor=["eDP-1,highres,auto,2"])
-# Uncomment and adjust for your display:
+dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+
 wlr-randr --output eDP-1 --scale 2
 
-# Autostart
+riverctl rule-add -app-id "org.pwmt.zathura" ssd
+
+#riverctl spawn "swaybg -i $wallpaper"
 riverctl spawn "yambar"
 riverctl spawn "slstatus -s | dam"
-riverctl spawn "swaybg -i $wallpaper"
 riverctl spawn "blueman-applet"
 riverctl spawn "nm-applet"
 
-# Appearance (no gaps, 2px border like Hyprland)
 riverctl border-width 2
 riverctl border-color-focused 0x93a1a1
 riverctl border-color-unfocused 0x586e75
 riverctl border-color-urgent 0xdc322f
 
-# Input - touchpad natural scroll
 riverctl input pointer-* natural-scroll enabled
 riverctl input pointer-* tap enabled
 riverctl input pointer-* disable-while-typing enabled
 
-# Keyboard layout: us with caps:swapescape
-riverctl keyboard-layout -options caps:swapescape us
+riverctl keyboard-layout -options caps:swapescape us,de
 
-# Toggle layout (Super+Shift+Space) - needs toggle-kb-layout script in PATH
-riverctl map normal $mod+Shift Space spawn toggle-kb-layout
+#riverctl map normal $mod+Shift Space spawn toggle-kb-layout
 
-# Focus follows cursor
 riverctl focus-follows-cursor normal
 riverctl set-cursor-warp on-focus-change
 
-# Apps
 riverctl map normal $mod Return spawn $term
 riverctl map normal $mod P spawn $menu
 
-# Screenshot
 riverctl map normal $mod+Shift S spawn 'grim -g "$(slurp)" - | wl-copy'
 
-# Session
 riverctl map normal $mod+Shift C close
 riverctl map normal $mod M exit
 
@@ -66,9 +55,9 @@ riverctl map normal $mod+Shift K swap up
 riverctl map normal $mod+Shift L swap right
 
 for i in $(seq 1 9); do
-    tag=$((1 << (i - 1)))
-    riverctl map normal $mod $i set-focused-tags $tag
-    riverctl map normal $mod+Shift $i set-view-tags $tag
+	tag=$((1 << (i - 1)))
+	riverctl map normal $mod $i set-focused-tags $tag
+	riverctl map normal $mod+Shift $i set-view-tags $tag
 done
 
 all_tags=$(((1 << 32) - 1))
