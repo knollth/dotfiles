@@ -28,4 +28,25 @@
 
 (global-set-key (kbd "C-c u") 'my/dired-uni)
 
+(defun my/open-pdf-zathura ()
+  "Select PDF via consult, open in Zathura."
+  (interactive)
+  (let* ((parent (file-name-directory (directory-file-name default-directory)))
+         (pdfs (append
+                (mapcar (lambda (f) (propertize f 'consult--prefix "current: "))
+                        (directory-files default-directory t "\\.pdf\\'" t))
+                (mapcar (lambda (f) (propertize f 'consult--prefix "parent:  "))
+                        (directory-files parent t "\\.pdf\\'" t))))
+         (selected (consult--read pdfs
+                                  :prompt "PDF: "
+                                  :require-match t
+                                  :sort nil
+                                  :group (lambda (cand transform)
+                                           (if transform cand
+                                             (get-text-property 0 'consult--prefix cand)))))
+	 )
+    (call-process-shell-command
+     (format "zathura %s &" (shell-quote-argument selected)) nil 0)))
+
+(keymap-global-set "C-c z" #'my/open-pdf-zathura)
 (provide 'shortcuts)

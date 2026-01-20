@@ -1,7 +1,5 @@
 fpath=(~/scripts ~/.zfunc $fpath)
 
-autoload -Uz env-ocaml oass
-
 autoload -U compinit bashcompinit
 compinit
 bashcompinit
@@ -11,7 +9,6 @@ bashcompinit
 source <(fzf --zsh)
 eval "$(starship init zsh)"
 
-# Aliasses: RCLONE and UNI
 RCLONE_FLAGS="--exclude '**/.git/**' --exclude '**/.venv/**' --fast-list -v"
 alias uni="cd $UNI && yazi"
 alias unidb="cd $UNI && ls && distrobox enter $CURSEM"
@@ -33,12 +30,3 @@ alias zath="zathura --fork"
 alias dbe="distrobox enter"
 alias lsa="ls -a"
 alias vim="nvim"
-
-# >>> juliaup initialize >>>
-
-# !! Contents within this block are managed by juliaup !!
-
-path=('/home/tom/.juliaup/bin' $path)
-export PATH
-
-# <<< juliaup initialize <<<

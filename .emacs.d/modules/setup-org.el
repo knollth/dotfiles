@@ -24,7 +24,7 @@
   (org-latex-preview-appearance-options
       '(:foreground default
         :background default
-        :zoom 1.2   
+        :zoom 1.3   
         :html-scale 1.0))
   
   :config  
