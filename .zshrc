@@ -1,4 +1,4 @@
-fpath=(~/scripts ~/.zfunc $fpath)
+fpath=(~/.zfunc $fpath)
 
 autoload -U compinit bashcompinit
 compinit
