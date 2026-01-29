@@ -1,22 +1,30 @@
-;; set fonts
+;; Aporetic - Prot's Iosevka build (schmal = mehr Platz)
 (set-face-attribute 'default nil 
-                    :font "Hasklig" 
-                    :height 120 
-                    :weight 'normal)
+                    :family "Aporetic Sans Mono"
+                    :height 130  ; bei 2x HiDPI evtl. 140
+                    :weight 'regular)
+
+;; Variable pitch für org prose (optional)
+(set-face-attribute 'variable-pitch nil
+                    :family "Aporetic Sans"
+                    :height 130)
+
+;; Fixed pitch explizit (für org code blocks)
+(set-face-attribute 'fixed-pitch nil
+                    :family "Aporetic Sans Mono"
+                    :height 130)
 
 (use-package ligature
   :ensure t
   :config
-  ;; Enable all Hasklig ligatures for common modes
+  ;; Iosevka/Aporetic ligatures
   (ligature-set-ligatures '(prog-mode org-mode)
-                          '("&&" "***" "*>" "\\\\" "||" "|>" "::" "==" "===" "==>" "=>" 
-                            "->>" "->"
-                            "=<<" "!!" ">>" ">>=" ">>-" ">-" "-<" "-<<" "<-"
-                            "<=" "<==" "<=>" "<$>" "<$" "<*>" "<*" "<>" "++" "/=" "---" "-~" 
-                            "~>" "=<" "|||"))
-  ;; Global mode enables it everywhere
+                          '("->" "->>" "-->" "---" "=>" "==>" "==" "===" 
+                            "!=" "!==" "::" ":::" "&&" "||" "|>" "<|"
+                            "++" "+++" "<-" "<<-" "<--" "<>" "<!--"
+                            ">>" "<<" ">>=" "<<=" "/=" "<=" ">="
+                            "#{" "#(" "#_" "#_(" "#?" "#:" "##"
+                            "/*" "*/" "/**" "www" "&&" "***"))
   (global-ligature-mode t))
 
 (provide 'setup-fonts)
-
-"->"

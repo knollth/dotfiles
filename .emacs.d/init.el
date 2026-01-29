@@ -8,7 +8,9 @@
 (menu-bar-mode 0)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(setq default-frame-alist '((undecorated . t)))
+(add-to-list 'default-frame-alist '(vertical-scroll-bars . nil))
+(add-to-list 'default-frame-alist '(horizontal-scroll-bars . nil))
+(add-to-list 'default-frame-alist '(undecorated . t))
 
 ;; Gc Tweaks
 (setq gc-cons-threshold (* 150 1024 1024))
@@ -40,32 +42,15 @@
 ;; ** Modules ** 
 (add-to-list 'load-path "~/.emacs.d/modules")
 (require 'setup-org)
-(require 'setup-fonts)
 (require 'languages)
 (require 'setup-meow)
 (require 'shortcuts)
+(require 'setup-theme)
+(require 'setup-fonts)
+
 
 (setq auto-revert-use-notify t)
 (setq auto-revert-avoid-polling t)
-
-;; ** themes **
-;;(use-package cherry-blossom-theme)
-;;(use-package ef-themes
-;;  :ensure t
-;;  :init
-;;  (ef-themes-take-over-modus-themes-mode 1)
-;;  :bind
-;;  (("<f9>" . modus-themes-rotate)
-;;   ("C-<f9>" . modus-themes-select)
-;;   ("M-<f9>" . modus-themes-load-random))
-;;  :config
-;;  ;; All customisations here.
-;;  (setq modus-themes-mixed-fonts t)
-;;  (setq modus-themes-italic-constructs t)
-;;  (modus-themes-load-theme 'ef-cherie))
-
-(use-package solarized-theme)
-(load-theme 'solarized-dark-high-contrast t)
 
 ;; -- Completion
 (add-hook 'prog-mode-hook 'electric-pair-mode)
@@ -114,3 +99,23 @@
                (direction . right)
                (window-height . 0.5)))
 
+(use-package dashboard
+  :demand t
+  :ensure t
+  :hook (server-after-make-frame . dashboard-open)
+  :custom
+  (dashboard-banner-logo-title nil)
+  (dashboard-startup-banner "~/Pictures/rei_xp.png")
+  (dashboard-center-content t)
+  (dashboard-vertically-center-content t)  
+  (dashboard-image-banner-max-height 260)
+  (dashboard-image-banner-max-width 260)
+  
+  (dashboard-items '((recents   . 8)
+                     (projects  . 5)
+                     (agenda    . 5)))
+  (dashboard-projects-backend 'project-el)
+  (dashboard-week-agenda t)
+  (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
+  :config
+  (dashboard-setup-startup-hook))

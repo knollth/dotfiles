@@ -26,12 +26,15 @@ riverctl input pointer-* natural-scroll enabled
 riverctl input pointer-* tap enabled
 riverctl input pointer-* disable-while-typing enabled
 
-riverctl keyboard-layout -options caps:swapescape us,de
-
-#riverctl map normal $mod+Shift Space spawn toggle-kb-layout
+riverctl keyboard-layout -options grp:win_space_toggle,caps:swapescape us,de
 
 riverctl focus-follows-cursor normal
 riverctl set-cursor-warp on-focus-change
+
+
+riverctl map normal $mod E spawn 'emacsclient -c'
+riverctl map normal $mod+Shift E spawn 'systemctl --user restart emacs'
+
 
 riverctl map normal $mod Return spawn $term
 riverctl map normal $mod P spawn $menu
@@ -39,10 +42,10 @@ riverctl map normal $mod P spawn $menu
 riverctl map normal $mod+Shift S spawn 'grim -g "$(slurp)" - | wl-copy'
 
 riverctl map normal $mod+Shift C close
-riverctl map normal $mod M exit
+riverctl map normal $mod+Shift M exit
 
 riverctl map normal $mod V toggle-float
-riverctl map normal $mod Space toggle-fullscreen
+riverctl map normal $mod F toggle-fullscreen
 
 riverctl map normal $mod H focus-view left
 riverctl map normal $mod J focus-view down
@@ -76,6 +79,10 @@ riverctl map normal $mod Period send-layout-cmd rivertile "main-count -1"
 
 riverctl map -repeat normal None XF86MonBrightnessUp spawn "brightnessctl set 5%+"
 riverctl map -repeat normal None XF86MonBrightnessDown spawn "brightnessctl set 5%-"
+
+riverctl map -repeat normal None XF86AudioRaiseVolume spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+riverctl map -repeat normal None XF86AudioLowerVolume spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+riverctl map normal None XF86AudioMute spawn "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
 
 # Float certain windows
 riverctl rule-add -app-id "pavucontrol" float

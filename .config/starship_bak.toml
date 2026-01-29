@@ -1,0 +1,31 @@
+# ~/.config/starship.toml
+
+format = "$username$directory$git_branch$git_status$container $character"
+
+[username]
+show_always = true
+style_user = "bold bright-blue"
+format = "[$user]($style)"
+
+[directory]
+style = "bold bright-green"
+format = " in [$path]($style)"
+
+[git_branch]
+style = "bold #a1cdd8"
+format = "[ on $branch]($style)"
+
+[git_status]
+style = "#a1cdd8"
+modified = '\($count modified\)'
+format = "( [$modified]($style))"
+
+[container]
+symbol = " 📦"
+style = "bold yellow"
+format = "[$symbol$name]($style)" 
+
+[character]
+success_symbol = "[λ](bold bright-blue)"
+error_symbol = "[λ](bold red)"
+vicmd_symbol = "[λ](bold blue)"

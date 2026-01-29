@@ -1,4 +1,7 @@
-theme = Solarized Dark Higher Contrast
+theme = Builtin Solarized Dark
+#config-file = themes/ef-reverie
+font-family = Aporetic Sans Mono
+font-size = 13
 
 window-decoration=false
 window-theme = ghostty

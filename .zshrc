@@ -30,3 +30,6 @@ alias zath="zathura --fork"
 alias dbe="distrobox enter"
 alias lsa="ls -a"
 alias vim="nvim"
+
+# opencode
+export PATH=/home/tom/.opencode/bin:$PATH

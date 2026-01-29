@@ -1,5 +1,8 @@
+;;; -*- lexical-binding: t; -*-
 (setq treesit-language-source-alist
       '((c "https://github.com/tree-sitter/tree-sitter-c")
+	(zig "https://github.com/tree-sitter-grammars/tree-sitter-zig")
+	(cpp "https://github.com/tree-sitter/tree-sitter-cpp")
 	(typst "https://github.com/uben0/tree-sitter-typst")
 	(python "https://github.com/tree-sitter/tree-sitter-python")
 	(julia "https://github.com/tree-sitter/tree-sitter-julia")
@@ -11,18 +14,38 @@
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs (cons mode cmd))))
 
+(use-package eglot
+  :bind (:map eglot-mode-map
+              ("C-c h" . eglot-inlay-hints-mode))
+  :hook (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1))))  ; default aus
+
 (use-package apheleia
   :ensure t
   :hook ((tuareg-mode . apheleia-mode)
 	 (python-ts-mode . apheleia-mode)))
 
+;; --------------------- Zig ------------------------
+
+(use-package zig-ts-mode
+  :vc (:url "https://codeberg.org/meow_king/zig-ts-mode"
+	    :rev :newest)
+  :init (my/eglot-add-server 'zig-ts-mode '("zls"))  
+  :mode "\\.zig\\'"
+  :hook (zig-ts-mode . eglot-ensure))
+
 ;; -------------------- C/C++ -----------------------
+
 (use-package c-ts-mode
-  ;; for edge-cases where (c-mode) is called
-  :init (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-  :custom (c-ts-mode-indent-offset 2)
-  :mode ("\\.c\\'" "\\.h\\'");; theoretically redundant bc of :init
-  :hook (c-ts-mode . eglot-ensure))
+  :init 
+  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))  ; NEU
+  :mode (("\\.c\\'" . c-ts-mode) 
+         ("\\.h\\'" . c-ts-mode)
+         ("\\.cpp\\'" . c++-ts-mode)   ; NEU
+         ("\\.hpp\\'" . c++-ts-mode))  ; NEU
+  :custom (c-ts-mode-indent-offset 4)
+  :hook ((c-ts-mode . eglot-ensure)
+         (c++-ts-mode . eglot-ensure)))  ; NEU
 
 ;; -------------------- Typst  -----------------------
 (defun my/typst-math-p ()
@@ -80,7 +103,33 @@
 	 '("julia" "--startup-file=no" "--history-file=no" "-e"
            "using LanguageServer; runserver()")))
 
-;; --------------------------------------------------
+
+;; -------------------- SQL/PL/SQL -----------------------
+
+(use-package sql
+  :custom
+  (sql-product 'oracle)
+  (sql-connection-alist
+   '((oracle-local
+      (sql-product 'oracle)
+      (sql-user "system")
+      (sql-password "yourpassword")
+      (sql-database "localhost:1521/FREEPDB1")))))
+
+(use-package sql-indent
+  :ensure t
+  :hook (sql-mode . (lambda ()
+                      (unless (bound-and-true-p org-src-mode)
+                        (sqlind-minor-mode 1)))))
 
 
+;;(use-package plsql
+;;  :vc (:url "https://github.com/emacsmirror/plsql")
+;;  :mode (("\\.pls\\'" . plsql-mode)
+;;         ("\\.plb\\'" . plsql-mode)  
+;;         ("\\.pkg\\'" . plsql-mode)
+;;         ("\\.pkb\\'" . plsql-mode)))
+
+
+;------------------------------------------------------------
 (provide 'languages)

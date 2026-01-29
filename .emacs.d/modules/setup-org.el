@@ -9,6 +9,8 @@
 	 ("C-c c" . org-capture)
 	 ("C-c l" . org-latex-preview))
   :custom
+  (org-edit-src-content-indentation 0)
+  (org-export-babel-evaluate nil)
   (org-directory "~/org")
   (org-agenda-files '("~/org/agenda"))
   (org-agenda-include-diary t)
@@ -27,7 +29,8 @@
         :zoom 1.3   
         :html-scale 1.0))
   
-  :config  
+  :config
+  (require 'ox-beamer)
   (setq org-capture-templates
         '(;; Quick inbox for random thoughts
           ("i" "Inbox" entry (file "~/org/agenda/inbox.org")
@@ -45,19 +48,19 @@
            ((agenda "" ((org-agenda-span 3)
                         (org-agenda-start-on-weekday nil)))
             (todo "STUCK"
-                  ((org-agenda-overriding-header "⚠️  Stuck - Need to revisit")))
+                  ((org-agenda-overriding-header "Stuck - Need to revisit")))
             (todo "TODO"
-                  ((org-agenda-overriding-header "📥 Inbox")
+                  ((org-agenda-overriding-header "Inbox")
                    (org-agenda-files '("~/org/agenda/inbox.org"))))))
           ("m" "Math Dashboard"
            ((todo "STUCK"
-                  ((org-agenda-overriding-header "🔴 Stuck Problems")
+                  ((org-agenda-overriding-header "Stuck Problems")
                    (org-agenda-files '("~/org/agenda/math.org"))))
             (todo "TODO"
-                  ((org-agenda-overriding-header "📝 Problems Queue")
+                  ((org-agenda-overriding-header "Problems Queue")
                    (org-agenda-files '("~/org/agenda/math.org"))))
             (tags "CLOSED>=\"<-7d>\""
-                  ((org-agenda-overriding-header "✅ Completed This Week")
+                  ((org-agenda-overriding-header "Completed This Week")
                    (org-agenda-files '("~/org/agenda/math.org"))))))))
   
   (org-babel-do-load-languages
@@ -65,9 +68,9 @@
    '((emacs-lisp . t)
      (python . t)
      (shell . t)
-     (dot . t)))
+     (dot . t)
+     (sql . t)))
 
-  
   ;; Wolfram Logic: Moved here to ensure 'org-src-lang-modes' exists
   (add-to-list 'org-src-lang-modes '("wolfram" . wolfram))
   (defun org-babel-execute:wolfram (body _params)
@@ -124,7 +127,8 @@
 
 (use-package auctex
   :defer t)
- (use-package cdlatex
+
+(use-package cdlatex
   :ensure t
   :hook (org-mode . turn-on-org-cdlatex)
   :config
@@ -134,6 +138,14 @@
           (?R ("\\mathbb{R}"))
           (?Z ("\\mathbb{Z}"))
           (?Q ("\\mathbb{Q}"))
-          (?C ("\\mathbb{C}")))))
+          (?C ("\\mathbb{C}"))))
+  (setq cdlatex-env-alist
+        '(("bmat" "\\begin{bmatrix}\n?\n\\end{bmatrix}" nil)
+          ("pmat" "\\begin{pmatrix}\n?\n\\end{pmatrix}" nil)
+          ("cases" "\\begin{cases}\n?\n\\end{cases}" nil)))
+  (setq cdlatex-math-modify-alist
+        '((?b "\\mathbf" nil t nil nil)
+          (?c "\\mathcal" nil t nil nil)
+          (?s "\\mathscr" nil t nil nil))))
  
 (provide 'setup-org)

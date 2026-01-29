@@ -18,15 +18,33 @@
   (dired "~/org"))
 (global-set-key (kbd "C-c o") 'my/dired-org)
 
-(defun my/dired-uni ()
-  "Open dired in the current semester folder defined by $UNI."
-  (interactive)
-  (let ((uni-path (getenv "UNI")))
-    (if uni-path
-        (dired (expand-file-name "WS25-26" uni-path)) 
-      (message "Error: $UNI environment variable is not set."))))
+(defcustom my/uni-file-regex "\\.\\(typ\\|pdf\\|org\\|c\\|h\\|py\\|rs\\|ml\\|hs\\|java\\|js\\|ts\\)$"
+  "Default regex for `my/uni-jump'.")
 
-(global-set-key (kbd "C-c u") 'my/dired-uni)
+(defun my/uni-jump (regex)
+  "Jump to a uni folder or file matching REGEX."
+  (interactive (list (read-string "File regex: " my/uni-file-regex)))
+  (let* ((base (expand-file-name "WS25-26" (getenv "UNI")))
+         (all (directory-files-recursively
+               base regex t
+               (lambda (d) (not (string-prefix-p "." (file-name-nondirectory d))))))
+         (pick (completing-read "Uni: " (mapcar (lambda (p) (file-relative-name p base)) all)))
+         (target (expand-file-name pick base)))
+    (funcall (if (file-directory-p target) #'dired #'find-file) target)))
+
+(defun my/uni-dirs ()
+  "Jump to a uni folder."
+  (interactive)
+  (let* ((base (expand-file-name "WS25-26" (getenv "UNI")))
+         (dirs (directory-files-recursively
+                base "" t
+                (lambda (d) (not (string-prefix-p "." (file-name-nondirectory d))))))
+         (pick (completing-read "Uni: " (mapcar (lambda (p) (file-relative-name p base)) dirs))))
+    (dired (expand-file-name pick base))))
+
+(global-set-key (kbd "C-c u") (lambda () (interactive) (my/uni-jump my/uni-file-regex)))
+(global-set-key (kbd "C-c U") #'my/uni-dirs)
+
 
 (defun my/open-pdf-zathura ()
   "Select PDF via consult, open in Zathura."
