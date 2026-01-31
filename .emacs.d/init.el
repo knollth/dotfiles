@@ -31,6 +31,7 @@
 (add-hook 'conf-mode-hook #'display-line-numbers-mode)  
 (add-hook 'dired-mode-hook #'display-line-numbers-mode)
 
+
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
@@ -47,7 +48,7 @@
 (require 'shortcuts)
 (require 'setup-theme)
 (require 'setup-fonts)
-
+(require 'setup-modeline)
 
 (setq auto-revert-use-notify t)
 (setq auto-revert-avoid-polling t)
@@ -119,3 +120,4 @@
   (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
   :config
   (dashboard-setup-startup-hook))
+

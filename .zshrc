@@ -1,8 +1,11 @@
 fpath=(~/.zfunc $fpath)
+fpath=(${fpath:#/usr/share/zsh/site-functions})
 
 autoload -U compinit bashcompinit
 compinit
 bashcompinit
+
+source /usr/share/zsh/site-functions/_guix 2>/dev/null
 
 [ -f "$HOME/.profile" ] && . "$HOME/.profile"
 

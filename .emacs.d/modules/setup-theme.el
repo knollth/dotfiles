@@ -12,7 +12,7 @@
   ;; All customisations here.
   (setq modus-themes-mixed-fonts t)
   (setq modus-themes-italic-constructs t)
-  (modus-themes-load-theme 'ef-reverie))
+  (modus-themes-load-theme 'ef-dream))
 
 ;;(use-package solarized-theme)
 ;;(load-theme 'solarized-dark-high-contrast t)

@@ -1,6 +1,6 @@
 export UNI="$HOME/Documents/Studium"
 export ORG="$HOME/ORG"
-export ORG-NOTES"$ORG/NOTES"
+export ORG_NOTES="$ORG/NOTES"
 
 export CURSEM="WS25-26"
 export EDITOR="hx"
