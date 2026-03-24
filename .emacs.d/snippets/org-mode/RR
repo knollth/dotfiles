@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: Reals 
-# key: RR
-# condition: (texmathp)
-# --
-\mathbb{R}$0
