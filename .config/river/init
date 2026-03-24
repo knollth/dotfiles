@@ -1,96 +1,21 @@
 #!/bin/sh
 
-mod="Super"
-term="ghostty"
-menu="fuzzel"
-#wallpaper="$HOME/Pictures/backgrounds/nautical/wave.png"
+#export MOZ_ENABLE_WAYLAND=1
+#export QT_QPA_PLATFORM=wayland
+#export XDG_CURRENT_DESKTOP=river
+export XKB_DEFAULT_OPTIONS=caps:swapescape
 
-dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+# The user dbus session is shared across all login sessions and all ttys
+# Therefore, only tell it about the first wayland session
+if [ "$WAYLAND_DISPLAY" = "wayland-1" ]; then
+	dbus-update-activation-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP PATH
+fi
 
-wlr-randr --output eDP-1 --scale 2
-
-riverctl rule-add -app-id "org.pwmt.zathura" ssd
-
-#riverctl spawn "swaybg -i $wallpaper"
-riverctl spawn "yambar"
-riverctl spawn "slstatus -s | dam"
-riverctl spawn "blueman-applet"
-riverctl spawn "nm-applet"
-
-riverctl border-width 2
-riverctl border-color-focused 0x93a1a1
-riverctl border-color-unfocused 0x586e75
-riverctl border-color-urgent 0xdc322f
-
-riverctl input pointer-* natural-scroll enabled
-riverctl input pointer-* tap enabled
-riverctl input pointer-* disable-while-typing enabled
-
-riverctl keyboard-layout -options grp:win_space_toggle,caps:swapescape us,de
-
-riverctl focus-follows-cursor normal
-riverctl set-cursor-warp on-focus-change
-
-
-riverctl map normal $mod E spawn 'emacsclient -c'
-riverctl map normal $mod+Shift E spawn 'systemctl --user restart emacs'
-
-
-riverctl map normal $mod Return spawn $term
-riverctl map normal $mod P spawn $menu
-
-riverctl map normal $mod+Shift S spawn 'grim -g "$(slurp)" - | wl-copy'
-
-riverctl map normal $mod+Shift C close
-riverctl map normal $mod+Shift M exit
-
-riverctl map normal $mod V toggle-float
-riverctl map normal $mod F toggle-fullscreen
-
-riverctl map normal $mod H focus-view left
-riverctl map normal $mod J focus-view down
-riverctl map normal $mod K focus-view up
-riverctl map normal $mod L focus-view right
-
-riverctl map normal $mod+Shift H swap left
-riverctl map normal $mod+Shift J swap down
-riverctl map normal $mod+Shift K swap up
-riverctl map normal $mod+Shift L swap right
-
-for i in $(seq 1 9); do
-	tag=$((1 << (i - 1)))
-	riverctl map normal $mod $i set-focused-tags $tag
-	riverctl map normal $mod+Shift $i set-view-tags $tag
-done
-
-all_tags=$(((1 << 32) - 1))
-riverctl map normal $mod 0 set-focused-tags $all_tags
-riverctl map normal $mod+Shift 0 set-view-tags $all_tags
-
-riverctl map-pointer normal $mod BTN_LEFT move-view
-riverctl map-pointer normal $mod BTN_RIGHT resize-view
-riverctl map-pointer normal $mod+Shift BTN_LEFT resize-view
-
-# Layout adjustments
-riverctl map normal $mod BracketLeft send-layout-cmd rivertile "main-ratio -0.05"
-riverctl map normal $mod BracketRight send-layout-cmd rivertile "main-ratio +0.05"
-riverctl map normal $mod Comma send-layout-cmd rivertile "main-count +1"
-riverctl map normal $mod Period send-layout-cmd rivertile "main-count -1"
-
-riverctl map -repeat normal None XF86MonBrightnessUp spawn "brightnessctl set 5%+"
-riverctl map -repeat normal None XF86MonBrightnessDown spawn "brightnessctl set 5%-"
-
-riverctl map -repeat normal None XF86AudioRaiseVolume spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-riverctl map -repeat normal None XF86AudioLowerVolume spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-riverctl map normal None XF86AudioMute spawn "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-
-# Float certain windows
-riverctl rule-add -app-id "pavucontrol" float
-riverctl rule-add -app-id "blueman-manager" float
-riverctl rule-add -app-id "nm-connection-editor" float
-
-# Server-side decorations
-riverctl rule-add ssd
-
-riverctl default-layout rivertile
-rivertile -view-padding 0 -outer-padding 0 -main-ratio 0.55 -main-count 1 &
+timestamp=$(date +%F-%R)
+WAYLAND_DEBUG=1 rijan >/tmp/rijan-${timestamp}.log 2>&1 &
+#WAYLAND_DEBUG=1 kwm >/tmp/kwm-${timestamp}.log 2>&1 &&
+foot --server &
+kanshi &
+wlsunset -l 48.2 -L 16.4 &
+sleep 0.5
+swaybg --image ~/Pictures/Backgrounds/everforest/close_up/sakura.png --mode fill &
