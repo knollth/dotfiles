@@ -1,3 +1,9 @@
+(defun my/shell-command-insert ()
+  "Run shell command and insert output at point."
+  (interactive)
+  (let ((current-prefix-arg '(4)))
+    (call-interactively #'shell-command)))
+
 (defun my/meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-motion-define-key
@@ -19,6 +25,9 @@
    '("/" . meow-keypad-describe-key)
    '("?" . meow-cheatsheet))
   (meow-normal-define-key
+   '("!" . my/shell-command-insert)
+   '("/" . meow-query-replace)
+   '("?" . meow-query-replace-regexp)
    '("0" . meow-expand-0)
    '("9" . meow-expand-9)
    '("8" . meow-expand-8)
@@ -104,6 +113,10 @@
           (eshell-mode . insert)
           (vterm-mode . insert)
           (term-mode . insert)
+	  (eat-mode . insert)
+	  (mu4e-main-mode . motion)
+	  (mu4e-headers-mode . motion)
+	  (mu4e-view-mode . motion)
           (shell-mode . insert)))
 
 ; Insert mode in minibuffer (for org-roam-find etc.)

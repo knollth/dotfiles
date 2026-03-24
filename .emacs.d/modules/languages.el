@@ -5,9 +5,14 @@
 	(cpp "https://github.com/tree-sitter/tree-sitter-cpp")
 	(typst "https://github.com/uben0/tree-sitter-typst")
 	(python "https://github.com/tree-sitter/tree-sitter-python")
-	(julia "https://github.com/tree-sitter/tree-sitter-julia")
 	(ocaml "https://github.com/tree-sitter/tree-sitter-ocaml" "master" "ocaml/src")
-        (ocaml-interface "https://github.com/tree-sitter/tree-sitter-ocaml" "master" "interface/src")))
+        (ocaml-interface "https://github.com/tree-sitter/tree-sitter-ocaml" "master" "interface/src")
+	(janet-simple "https://github.com/sogaiu/tree-sitter-janet-simple")))
+
+
+(use-package janet-ts-mode
+  :vc (:url "https://github.com/sogaiu/janet-ts-mode"
+	    :rev :newest))
 
 (defun my/eglot-add-server (mode cmd)
   "Add MODE -> CMD mapping to eglot-server-programs after eglot loads."
@@ -23,6 +28,16 @@
   :ensure t
   :hook ((tuareg-mode . apheleia-mode)
 	 (python-ts-mode . apheleia-mode)))
+
+;; -------------------- R/Statistics -----------------------
+
+(use-package ess
+  :ensure t
+  :mode (("\\.R\\'" . ess-r-mode)
+         ("\\.Rmd\\'" . ess-r-mode))
+  :custom
+  (ess-style 'RStudio)              
+  (ess-ask-for-ess-directory nil))  
 
 ;; --------------------- Zig ------------------------
 
@@ -92,17 +107,6 @@
 		 :url "https://codeberg.org/mekeor/nael.git")
   :hook ((nael-mode . eglot-ensure)
 	 (nael-mode . abbrev-mode)))
-
-;; -------------------- Julia -----------------------
-
-(use-package julia-ts-mode
-  :mode "\\.jl\\'"
-  :hook (julia-ts-mode . eglot-ensure)
-  :init (my/eglot-add-server
-         '(julia-mode julia-ts-mode)
-	 '("julia" "--startup-file=no" "--history-file=no" "-e"
-           "using LanguageServer; runserver()")))
-
 
 ;; -------------------- SQL/PL/SQL -----------------------
 

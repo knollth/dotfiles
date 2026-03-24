@@ -9,7 +9,7 @@
 	 ("C-c c" . org-capture)
 	 ("C-c l" . org-latex-preview))
   :custom
-  (org-edit-src-content-indentation 0)
+  (org-edit-src-content-indentation 1)
   (org-export-babel-evaluate nil)
   (org-directory "~/org")
   (org-agenda-files '("~/org/agenda"))
@@ -17,31 +17,28 @@
   (org-refile-targets '((org-agenda-files :maxlevel . 1)))
   (org-refile-use-outline-path 'file)
   (org-outline-path-complete-in-steps nil)
+  (org-image-actual-width nil)
 
-   ;; Async latex preview (tecosaur)
+  ;; Async latex preview (tecosaur)
   (org-latex-preview-mode-display-live t)
   (org-latex-preview-mode-update-delay 0.3)
   (org-latex-preview-process-precompile t)
   (org-latex-preview-numbered t)
   (org-latex-preview-appearance-options
-      '(:foreground default
-        :background default
-        :zoom 1.3   
-        :html-scale 1.0))
+   '(:foreground default
+		 :background default
+		 :zoom 1.4
+		 :html-scale 1.0))
   
   :config
   (require 'ox-beamer)
   (setq org-capture-templates
-        '(;; Quick inbox for random thoughts
+        '(;; Quick inbox for random thoughts	
           ("i" "Inbox" entry (file "~/org/agenda/inbox.org")
-           "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:"
-           :empty-lines 1)
-
-          ;; Log a problem you just worked on (quick entry)
-          ("p" "Problem (quick log)" entry
-           (file+headline "~/org/agenda/math.org" "Problem Log")
-           "* %{state} %^{Problem} %^g\n:PROPERTIES:\n:SOURCE: %^{Source}\n:DATE: %U\n:END:\n%?"
-           :empty-lines 1)))
+           "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:")
+	  ("a" "Appointment" entry (file "~/org/agenda/inbox.org")
+	   "* %?\n%^T"
+	   :prepend t)))
   (setq org-agenda-custom-commands
         '(;; Main dashboard: what's on your plate
           ("d" "Dashboard"
@@ -77,9 +74,9 @@
     (org-babel-eval (format "wolframscript -code %s" (shell-quote-argument body)) ""))
   
   (add-hook 'org-babel-after-execute-hook #'org-display-inline-images)
-    
+  
   (setq org-babel-python-command "python3")
-    ;; == Babel Defaults ==
+  ;; == Babel Defaults ==
   (setq org-babel-default-header-args
         '((:session . "none")
           (:results . "replace")

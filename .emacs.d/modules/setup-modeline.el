@@ -1,144 +1,93 @@
 ;; -*- lexical-binding: t; -*-
-;; setup-modeline.el - Tabbed modeline with modus-themes integration
+;;; setup-modeline.el — tabbed modeline, colored by the active theme
+;;;
+;;; Faces are empty shells; ml/setup-faces paints them from the
+;;; current modus/ef palette.  Two hooks keep them in sync:
+;;;   • modus-themes-after-load-theme-hook  (rotate / select / toggle)
+;;;   • enable-theme-functions              (any load-theme call, Emacs 29+)
 
-(setq display-time-default-load-average nil)
-(setq display-time-format "%H:%M")
-(setq battery-mode-line-format "%p")
+;;; ── Faces (roles only, no colors) ──────────────────────────
+
+(defface ml/default  '((t nil)) "Normal segment.")
+(defface ml/accent   '((t nil)) "Active/state segment.")
+(defface ml/dim      '((t nil)) "Background info.")
+(defface ml/modified '((t nil)) "Unsaved buffer.")
+(defface ml/vc       '((t nil)) "Version control.")
+
+;;; ── Paint from palette ─────────────────────────────────────
+
+(defun ml/box (color)
+  "Tab-shaped box spec for COLOR."
+  `(:line-width (3 . 1) :color ,color))
+
+(defun ml/setup-faces (&rest _)
+  "Paint modeline faces from the active theme's palette.
+Accepts &rest so it works as an `enable-theme-functions' hook."
+  (modus-themes-with-colors
+    (set-face-attribute 'ml/default  nil :background bg-dim        :foreground fg-main :box (ml/box bg-dim))
+    (set-face-attribute 'ml/accent   nil :background bg-active     :foreground fg-main :box (ml/box bg-active))
+    (set-face-attribute 'ml/dim      nil :background bg-main       :foreground fg-dim  :box (ml/box bg-main))
+    (set-face-attribute 'ml/modified nil :background bg-main       :foreground red     :box (ml/box bg-main))
+    (set-face-attribute 'ml/vc       nil :background bg-cyan-subtle :foreground cyan   :box (ml/box bg-cyan-subtle))))
+
+;;; ── Segments ───────────────────────────────────────────────
+
+(defun ml/seg (text &optional face)
+  "Wrap TEXT with FACE (default ml/default)."
+  (propertize (format " %s " text) 'face (or face 'ml/default)))
+
+(defun ml/meow ()
+  (when (bound-and-true-p meow-mode)
+    (ml/seg (string-trim (meow-indicator)) 'ml/accent)))
+
+(defun ml/buffer ()
+  (let ((mod (cond (buffer-read-only "◊ ")
+                   ((buffer-modified-p)
+                    (propertize "● " 'face 'ml/modified))
+                   (t ""))))
+    (ml/seg (concat mod (buffer-name)))))
+
+(defun ml/major-mode ()
+  (ml/seg (format-mode-line mode-name)
+          (if (bound-and-true-p eglot--managed-mode) 'ml/vc 'ml/dim)))
+
+(defun ml/vc ()
+  (when-let* ((file buffer-file-name)
+              (backend (vc-backend file))
+              (branch (substring-no-properties vc-mode 5)))
+    (ml/seg (concat " " branch) 'ml/vc)))
+
+(defun ml/position () (ml/seg "%l:%c" 'ml/dim))
+
+;;; ── Time & battery ─────────────────────────────────────────
+
+(setq display-time-default-load-average nil
+      display-time-format "%H:%M"
+      battery-mode-line-format "%p")
 (display-time-mode 1)
 (display-battery-mode 1)
 
-(defface my/modeline-segment
-  '((t :inherit mode-line))
-  "Primary modeline segments.")
+(defun ml/battery () (ml/seg (concat battery-mode-line-string "%%") 'ml/dim))
+(defun ml/time ()    (ml/seg display-time-string 'ml/dim))
 
-(defface my/modeline-segment-accent
-  '((t :inherit mode-line-emphasis))
-  "Accented modeline segments.")
+;;; ── Assemble ───────────────────────────────────────────────
 
-(defface my/modeline-segment-dim
-  '((t :inherit shadow))
-  "Dimmed modeline segments.")
-
-(defface my/modeline-vc
-  '((t :inherit success))
-  "VC branch.")
-
-(defface my/modeline-modified
-  '((t :inherit warning))
-  "Modified indicator.")
-
-(defface my/modeline-eglot
-  '((t :inherit success))
-  "Eglot indicator.")
-
-;;; Theme Integration
-
-(defun my/modeline-setup-faces ()
-  "Setup modeline faces using current modus/ef theme colors."
-  (modus-themes-with-colors
-    ;; Primäre Segmente (Buffer, Mode)
-    (set-face-attribute 'my/modeline-segment nil
-                        :background bg-dim
-                        :foreground fg-main
-                        :box `(:line-width (3 . 1) :color ,bg-dim))
-    
-    ;; Active/wichtige Segmente  
-    (set-face-attribute 'my/modeline-segment-accent nil
-                        :background bg-active
-                        :foreground fg-main
-                        :weight 'semibold
-                        :box `(:line-width (3 . 1) :color ,bg-active))
-    
-    ;; Dim Segmente (Position, Zeit)
-    (set-face-attribute 'my/modeline-segment-dim nil
-                        :background bg-main
-                        :foreground fg-dim
-                        :box `(:line-width (3 . 1) :color ,bg-main))
-    
-    ;; VC Branch
-    (set-face-attribute 'my/modeline-vc nil
-                        :background bg-blue-subtle
-                        :foreground cyan
-                        :box `(:line-width (3 . 1) :color ,bg-cyan-subtle))
-    
-    (set-face-attribute 'my/modeline-modified nil
-                        :foreground red-warmer)
-    
-    (set-face-attribute 'my/modeline-eglot nil
-                        :background bg-added-faint
-                        :foreground fg-added
-                        :box `(:line-width (3 . 1) :color ,bg-green-subtle))))
-
-;;; Segment Helper
-
-(defun my/ml-segment (content &optional face)
-  "Wrap CONTENT as modeline segment with optional FACE."
-  (let ((f (or face 'my/modeline-segment)))
-    (propertize (concat " " content " ") 'face f)))
-
-;;; Segments - alle separat
-
-(defun my/ml-meow ()
-  "Meow state."
-  (when (bound-and-true-p meow-mode)
-    (my/ml-segment (string-trim (meow-indicator)) 'my/modeline-segment-accent)))
-
-(defun my/ml-buffer ()
-  "Buffer name with modified/readonly indicator."
-  (let* ((mod (cond (buffer-read-only
-                     (propertize 'face 'my/modeline-segment-dim))
-                    ((buffer-modified-p)
-                     (propertize "● " 'face 'my/modeline-modified))
-                    (t "")))
-         (name (buffer-name)))
-    (my/ml-segment (concat mod name))))
-
-(defun my/ml-major-mode ()
-  "Major mode, colored if Eglot is active."
-  (let ((face (if (bound-and-true-p eglot--managed-mode)
-                  'my/modeline-eglot      
-                'my/modeline-segment-dim))) 
-    (my/ml-segment mode-name face)))
-
-(defun my/ml-vc ()
-  "VC branch."
-  (when-let* ((backend (vc-backend buffer-file-name))
-              (branch (substring-no-properties vc-mode 5)))
-    (my/ml-segment (concat " " branch) 'my/modeline-vc)))
-
-(defun my/ml-minor-modes ()
-  "Active minor modes."
-  (my/ml-segment (concat "(" (format-mode-line minor-mode-alist) " )") 'my/modeline-segment-dim))
-
-(defun my/ml-position ()
-  "Cursor position."
-  (my/ml-segment "%l:%c" 'my/modeline-segment-dim))
-
-(defun my/ml-battery ()
-  "Battery."
-  (my/ml-segment (concat battery-mode-line-string "%%") 'my/modeline-segment-dim))
-
-(defun my/ml-time ()
-  "Time."
-  (my/ml-segment (concat " " display-time-string) 'my/modeline-segment-dim))
 (setq-default mode-line-format
-	      '((:eval (my/ml-meow))
-		(:eval (my/ml-buffer))
-		(:eval (my/ml-vc))
-		(:eval (my/ml-major-mode))
-		(:eval (my/ml-minor-modes))
-		mode-line-format-right-align
-		(:eval (my/ml-position))
-		(:eval (my/ml-battery))
-		(:eval (my/ml-time))))
+              '((:eval (ml/meow))
+                (:eval (ml/buffer))
+                (:eval (ml/vc))
+                (:eval (ml/major-mode))
+                mode-line-format-right-align
+                (:eval (ml/position))
+                (:eval (ml/battery))
+                (:eval (ml/time))))
 
-(defun my/modeline-refresh ()
-  "Refresh modeline faces after theme change."
-  (my/modeline-setup-faces)
-  (force-mode-line-update t))
+;;; ── Hooks ──────────────────────────────────────────────────
+;; Both hooks so it works whether the theme switch comes from
+;; modus-themes-rotate / ef-themes or a raw (load-theme ...).
 
-(add-hook 'modus-themes-after-load-theme-hook #'my/modeline-refresh)
-(add-hook 'ef-themes-post-load-hook #'my/modeline-refresh)
-(add-hook 'after-init-hook #'my/modeline-setup-faces)
+(add-hook 'modus-themes-after-load-theme-hook #'ml/setup-faces)
+(add-hook 'enable-theme-functions #'ml/setup-faces)   ; Emacs 29+
+(ml/setup-faces)
 
 (provide 'setup-modeline)

@@ -24,7 +24,7 @@
 (defun my/uni-jump (regex)
   "Jump to a uni folder or file matching REGEX."
   (interactive (list (read-string "File regex: " my/uni-file-regex)))
-  (let* ((base (expand-file-name "WS25-26" (getenv "UNI")))
+  (let* ((base (expand-file-name "SS26" (getenv "UNI")))
          (all (directory-files-recursively
                base regex t
                (lambda (d) (not (string-prefix-p "." (file-name-nondirectory d))))))
@@ -35,7 +35,7 @@
 (defun my/uni-dirs ()
   "Jump to a uni folder."
   (interactive)
-  (let* ((base (expand-file-name "WS25-26" (getenv "UNI")))
+  (let* ((base (expand-file-name "SS26" (getenv "UNI")))
          (dirs (directory-files-recursively
                 base "" t
                 (lambda (d) (not (string-prefix-p "." (file-name-nondirectory d))))))

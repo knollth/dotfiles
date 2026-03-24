@@ -8,7 +8,7 @@
 (set-face-attribute 'variable-pitch nil
                     :family "Aporetic Sans"
                     :height 130)
-
+1234567890
 ;; Fixed pitch explizit (für org code blocks)
 (set-face-attribute 'fixed-pitch nil
                     :family "Aporetic Sans Mono"
