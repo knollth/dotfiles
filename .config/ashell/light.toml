@@ -1,0 +1,19 @@
+log_level = "ashell=debug"
+outputs = "All"
+position = "Top"
+enable_esc_key = true
+
+[modules]
+left = [ "Workspaces" ]
+center = [ "Clock" ]
+right = [ ["Privacy", "Settings" ] ]
+
+[appearance]
+style="Solid"
+background_color="#ffffff"
+#primary_color="#0031a9"
+primary_color="#88c8ff"
+secondary_color="#c4c4c4"
+text_color="#000000"
+danger_color="#cf2f4f"
+workspace_colors=["#88c8ff"]
