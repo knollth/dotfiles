@@ -14,6 +14,14 @@ hotkey-overlay {
     skip-at-startup
 }
 
+
+output "DP-3" {
+       position x=0 y=0;
+       mode "2560x1440@119.998"
+}
+
+output "eDP-1" { position x=600 y=1440; }
+
 input {
     keyboard {
         xkb {
