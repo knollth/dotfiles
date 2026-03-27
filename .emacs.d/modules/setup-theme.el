@@ -1,33 +1,25 @@
 ;; -*- lexical-binding: t; -*-
 ;;; setup-theme.el — pick a theme, everything else follows
 
+(use-package modus-themes :ensure t)
+
 (use-package ef-themes
   :ensure t
+  :after modus-themes
   :custom
   (ef-themes-variable-pitch-ui t)
+  (ef-themes-mixed-fonts t)
   :init
-  (ef-themes-take-over-modus-themes-mode)
-  (setq ef-themes-variable-pitch-ui t
-      ef-themes-mixed-fonts t)
-  :bind
-  (("<f9>"   . modus-themes-rotate)
-   ("C-<f9>" . modus-themes-select)
-   ("M-<f9>" . modus-themes-load-random))
+  (modus-themes-include-derivatives-mode 1)
   :config
-  (setq modus-themes-mixed-fonts t
-        modus-themes-italic-constructs t)
-  (modus-themes-load-theme 'ef-frost)
   (require 'setup-modeline))
 
-(defun my/ef-theme-colors ()
-  "Browse current ef-theme palette via vertico."
-  (interactive)
-  (let* ((palette (ef-themes--current-theme-palette))
-         (candidates (mapcar (lambda (entry)
-                               (format "%-30s %s" (car entry) (cadr entry)))
-                             palette)))
-    (kill-new
-     (car (split-string (completing-read "Color: " candidates nil t))))))
+(use-package darkman
+  :after ef-themes
+  :config
+  (setq darkman-themes '(:light ef-frost :dark ef-owl))
+  (darkman-mode 1))
+
 
 (defun my/pick-theme-color ()
   "Browse current theme palette in vertico with color swatches."
@@ -57,5 +49,6 @@
          (choice (completing-read "Palette: " candidates nil t)))
     (kill-new (cdr (assoc choice candidates)))
     (message "Copied: %s" (cdr (assoc choice candidates)))))
+
 
 (provide 'setup-theme)

@@ -1,4 +1,7 @@
 (setq custom-file "~/.emacs.custom.el")
+(when (file-exists-p custom-file)
+  (load custom-file))
+
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 (setq inhibit-startup-screen t)
 
