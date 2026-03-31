@@ -10,7 +10,7 @@ path=(
 export PATH
 
 #export UNI="$HOME/Documents/Studium"
-export UNI="$HOME/uni"
+export UNI="$HOME/Documents/Studium"
 export ORG="$HOME/ORG"
 export EDITOR="kak"
 
