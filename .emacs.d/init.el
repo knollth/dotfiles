@@ -164,25 +164,22 @@
         tmr-notification-urgency 'normal
         tmr-description-list 'tmr-description-history))
 
-
-(use-package dashboard
-  :demand t
-  :ensure t
-  :hook (server-after-make-frame . dashboard-open)
+(use-package enlight
+  :init
+  (setopt initial-buffer-choice #'enlight)
   :custom
-  (dashboard-banner-logo-title nil)
-  (dashboard-startup-banner "~/Pictures/rei_xp.png")
-  (dashboard-center-content t)
-  (dashboard-vertically-center-content t)  
-  (dashboard-image-banner-max-height 260)
-  (dashboard-image-banner-max-width 260)
-  
-  (dashboard-items '((recents   . 8)
-                     (projects  . 5)
-                     (agenda    . 5)))
-  (dashboard-projects-backend 'project-el)
-  (dashboard-week-agenda t)
-  (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
-  :config
-  (dashboard-setup-startup-hook))
+  (enlight-content
+   (concat
+    (propertize "MENU" 'face 'highlight)
+    "\n"
+    (enlight-menu
+     '(("Org Mode"
+	("Org-Agenda (current day)" (org-agenda nil "a") "a")
+	("Inbox" (find-file "~/org/agenda/inbox.org") "i"))
+       ("Downloads"
+	("Transmission" transmission "t")
+	("Downloads folder" (dired "~/Downloads") "a"))
+       ("Other"
+	("Projects" project-switch-project "p")))))))
+
 
