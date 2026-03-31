@@ -1,10 +1,5 @@
 ;;; -*- lexical-binding: t; -*-
 
-(use-package janet-ts-mode
-  :vc (:url "https://github.com/sogaiu/janet-ts-mode"
-	    :rev :newest)
-  :init
-  (add-to-list 'treesit-language-source-alist '(janet-simple "https://github.com/sogaiu/tree-sitter-janet-simple")))
 
 (defun my/eglot-add-server (mode cmd)
   "Add MODE -> CMD mapping to eglot-server-programs after eglot loads."
@@ -16,10 +11,20 @@
               ("C-c h" . eglot-inlay-hints-mode))
   :hook (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1))))  ; default aus
 
-(use-package apheleia
+(use-package apheleia ; auto-format
   :ensure t
   :hook ((tuareg-mode . apheleia-mode)
 	 (python-ts-mode . apheleia-mode)))
+
+(use-package kdl-mode :ensure t)
+
+;; -------------------- Janet -----------------------
+(use-package janet-ts-mode
+  :vc (:url "https://github.com/sogaiu/janet-ts-mode"
+	    :rev :newest)
+  :init (add-to-list 'treesit-language-source-alist
+		     '(janet-simple "https://github.com/sogaiu/tree-sitter-janet-simple")))
+
 
 ;; -------------------- Java -----------------------
 (use-package java-ts-mode
