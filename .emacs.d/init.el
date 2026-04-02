@@ -170,7 +170,7 @@
   :custom
   (enlight-content
    (concat
-    (propertize "MENU" 'face 'highlight)
+    ;;(propertize "MENU" 'face 'highlight)
     "\n"
     (enlight-menu
      '(("Org Mode"
@@ -178,7 +178,7 @@
 	("Inbox" (find-file "~/org/agenda/inbox.org") "i"))
        ("Downloads"
 	("Transmission" transmission "t")
-	("Downloads folder" (dired "~/Downloads") "a"))
+	("Downloads folder" (dired "~/Downloads") "d"))
        ("Other"
 	("Projects" project-switch-project "p")))))))
 
