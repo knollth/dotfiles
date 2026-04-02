@@ -36,13 +36,24 @@
 (add-hook 'dired-mode-hook #'display-line-numbers-mode)
 
 
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-(setq package-vc-allow-build-commands t)
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-(require 'use-package)
-(setq use-package-always-ensure t)
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 
 ;; ** Modules ** 
 (add-to-list 'load-path "~/.emacs.d/modules")
@@ -62,11 +73,9 @@
 (setq auto-revert-use-notify t)
 (setq auto-revert-avoid-polling t)
 
-(use-package vterm
-  :ensure t)
+(use-package vterm)
 
 (use-package eat
-  :ensure t
   :hook (eshell-load . eat-eshell-mode))
 
 ;; -- Completion
@@ -78,40 +87,32 @@
   (yas-global-mode 1))
 
 (use-package vertico
-  :ensure t
   :init
   (vertico-mode))
 
 (use-package consult
-  :ensure t
   :bind (("C-s" . consult-line)
          ("C-x b" . consult-buffer)
          ("M-y" . consult-yank-pop)))
 
 (use-package orderless
-  :ensure t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-defaults nil)
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package marginalia
-  :ensure t
   :init (marginalia-mode))
 
 (use-package embark
-  :ensure t
-
   :bind
   (("C-." . embark-act)         ;; pick some comfortable binding
    ("C-;" . embark-dwim)        ;; good alternative: M-.
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
 
   :init
-
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
-
   ;; Show the Embark target at point via Eldoc. You may adjust the
   ;; Eldoc strategy, if you want to see the documentation from
   ;; multiple providers. Beware that using this can be a little
@@ -126,21 +127,17 @@
   ;; (add-hook 'context-menu-functions #'embark-context-menu 100)
 
   :config
-
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none)))))
 
-;; Consult users will also want the embark-consult package.
 (use-package embark-consult
-  :ensure t ; only need to install it, embark loads it after consult if found
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package corfu
-  :ensure t
   :custom (corfu-cycle t)            
   :init (global-corfu-mode))
 
@@ -157,7 +154,6 @@
                (window-height . 0.5)))
 
 (use-package tmr
-  :ensure t
   :config
   (define-key global-map (kbd "C-c t") #'tmr-prefix-map)
   (setq tmr-sound-file "/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga"

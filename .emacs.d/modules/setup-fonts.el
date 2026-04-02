@@ -15,7 +15,6 @@
                     :height 130)
 
 (use-package ligature
-  :ensure t
   :config
   ;; Iosevka/Aporetic ligatures
   (ligature-set-ligatures '(prog-mode org-mode)

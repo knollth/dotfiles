@@ -7,27 +7,27 @@
     (add-to-list 'eglot-server-programs (cons mode cmd))))
 
 (use-package eglot
+  :straight nil
   :bind (:map eglot-mode-map
               ("C-c h" . eglot-inlay-hints-mode))
   :hook (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1))))  ; default aus
 
 (use-package apheleia ; auto-format
-  :ensure t
   :hook ((tuareg-mode . apheleia-mode)
 	 (python-ts-mode . apheleia-mode)))
 
-(use-package kdl-mode :ensure t)
+(use-package kdl-mode)
 
 ;; -------------------- Janet -----------------------
 (use-package janet-ts-mode
-  :vc (:url "https://github.com/sogaiu/janet-ts-mode"
-	    :rev :newest)
+  :straight (:host nil :repo "https://github.com/sogaiu/janet-ts-mode")
   :init (add-to-list 'treesit-language-source-alist
 		     '(janet-simple "https://github.com/sogaiu/tree-sitter-janet-simple")))
 
 
 ;; -------------------- Java -----------------------
 (use-package java-ts-mode
+  :straight nil ;; built-in
   :init
   (add-to-list 'major-mode-remap-alist '(java-mode . java-ts-mode))
   (add-to-list 'treesit-language-source-alist '(java "https://github.com/tree-sitter/tree-sitter-java"))
@@ -37,13 +37,11 @@
 
 ;; -------------------- GLSL -----------------------
 (use-package glsl-mode
-  :ensure t
   :mode ("\\.fp\\'" "\\.vp\\'" "\\.frag\\'" "\\.vert\\'"))
 
 ;; -------------------- R/Statistics -----------------------
 
 (use-package ess
-  :ensure t
   :mode (("\\.R\\'" . ess-r-mode)
          ("\\.Rmd\\'" . ess-r-mode))
   :custom
@@ -57,8 +55,7 @@
 ;; --------------------- Zig ------------------------
 
 (use-package zig-ts-mode
-  :vc (:url "https://codeberg.org/meow_king/zig-ts-mode"
-	    :rev :newest)
+  :straight (:host nil :repo "https://codeberg.org/meow_king/zig-ts-mode")
   :init
   (add-to-list 'treesit-language-source-alist '(zig "https://github.com/tree-sitter-grammars/tree-sitter-zig"))
   (my/eglot-add-server 'zig-ts-mode '("zls"))  
@@ -68,6 +65,7 @@
 ;; -------------------- C/C++ -----------------------
 
 (use-package c-ts-mode
+  :straight nil ;; built-in
   :init
   (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
   (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))  
@@ -92,7 +90,7 @@
       node)))
 
 (use-package typst-ts-mode
-  :vc (:url "https://codeberg.org/meow_king/typst-ts-mode.git")
+  :straight (:host nil :repo "https://codeberg.org/meow_king/typst-ts-mode.git")
   :init
   (my/eglot-add-server 'typst-ts-mode  '("tinymist" "lsp"))
   (add-to-list 'treesit-language-source-alist '(typst "https://github.com/uben0/tree-sitter-typst") )
@@ -103,18 +101,17 @@
 
 ;; -------------------- OCaml -----------------------
 (use-package tuareg
-  :ensure t
   :hook ((tuareg-mode . eglot-ensure)
          (tuareg-mode . prettify-symbols-mode))
   :custom (tuareg-default-indent 2))
 
 (use-package utop
-  :ensure t
   :custom (utop-command "utop -emacs")
   :hook (tuareg-mode . utop-minor-mode))
 
 ;; -------------------- Python -----------------------
 (use-package python
+  :straight nil ;; built-in
   :init
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   (add-to-list 'treesit-language-source-alist '(python "https://github.com/tree-sitter/tree-sitter-python"))
@@ -123,16 +120,10 @@
   :hook (python-ts-mode . eglot-ensure)
   :custom (python-indent-offset 4))
 
-;; -------------------- Lean4 -----------------------
-(use-package nael
-  :vc (:lisp-dir "nael"
-		 :url "https://codeberg.org/mekeor/nael.git")
-  :hook ((nael-mode . eglot-ensure)
-	 (nael-mode . abbrev-mode)))
-
 ;; -------------------- SQL/PL/SQL -----------------------
 
 (use-package sql
+  :straight nil
   :custom
   (sql-product 'oracle)
   (sql-connection-alist
@@ -143,14 +134,13 @@
       (sql-database "localhost:1521/FREEPDB1")))))
 
 (use-package sql-indent
-  :ensure t
   :hook (sql-mode . (lambda ()
                       (unless (bound-and-true-p org-src-mode)
                         (sqlind-minor-mode 1)))))
 
 
 ;;(use-package plsql
-;;  :vc (:url "https://github.com/emacsmirror/plsql")
+;;  :straight (:host github :repo "emacsmirror/plsql")
 ;;  :mode (("\\.pls\\'" . plsql-mode)
 ;;         ("\\.plb\\'" . plsql-mode)  
 ;;         ("\\.pkg\\'" . plsql-mode)

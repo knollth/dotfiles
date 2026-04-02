@@ -4,7 +4,6 @@
 (use-package modus-themes :ensure t)
 
 (use-package ef-themes
-  :ensure t
   :after modus-themes
   :custom
   (ef-themes-variable-pitch-ui t)

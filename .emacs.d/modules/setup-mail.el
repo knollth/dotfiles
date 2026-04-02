@@ -1,7 +1,7 @@
 ;;; -*- lexical-binding: t; -*-
 
 (use-package mu4e
-  :ensure nil
+  :straight nil ;; installed via dnf 
   :load-path "/usr/share/emacs/site-lisp/mu4e/" ;; Adjust if needed
   :bind ("C-c m" . mu4e)
   

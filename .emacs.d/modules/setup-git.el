@@ -1,5 +1,4 @@
 (use-package magit
-  :ensure t              ; Auto-install if not found
   :bind (("C-x g" . magit-status)
          ("C-x M-g" . magit-dispatch))
   :config
