@@ -1,8 +1,16 @@
+(defvar my/shortcuts-enabled t)
+
+
+(defun my/inbox ()
+  "Open the org inbox"
+  (interactive)
+  (find-file "/ssh:hetzner-deb:org/agenda/inbox.org"))
+(global-set-key (kbd "C-c i") 'my/inbox)
+
 (defun my/dired-dots ()
   "Open the dotfiles-directory (~/.emacs.d/) in Dired."
   (interactive)
   (dired "~/dotfiles"))
-
 (global-set-key (kbd "C-c d") 'my/dired-dots)
 
 (defun my/dired-emacsd ()
