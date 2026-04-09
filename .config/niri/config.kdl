@@ -12,6 +12,10 @@ spawn-sh-at-startup "darkman run"
 
 hotkey-overlay { skip-at-startup; }
 
+window-rule {
+    match app-id=r#"gamescope"#
+    open-fullscreen true
+}
 
 output "DP-3" {
        position x=0 y=0;
