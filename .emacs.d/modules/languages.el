@@ -26,14 +26,18 @@
 
 
 ;; -------------------- Java -----------------------
+(use-package eglot-java
+  :straight (:host github :repo "yveszoundi/eglot-java")
+  :demand t
+  :hook (java-ts-mode . eglot-java-mode))  ;; eglot-java-mode calls eglot-ensure internally
+
 (use-package java-ts-mode
-  :straight nil ;; built-in
+  :straight nil
   :init
   (add-to-list 'major-mode-remap-alist '(java-mode . java-ts-mode))
-  (add-to-list 'treesit-language-source-alist '(java "https://github.com/tree-sitter/tree-sitter-java"))
-  (my/eglot-add-server 'java-ts-mode '("jdtls"))
-  :mode "\\.java\\'"
-  :hook (java-ts-mode . eglot-ensure))
+  (add-to-list 'treesit-language-source-alist
+               '(java "https://github.com/tree-sitter/tree-sitter-java"))
+  :mode "\\.java\\'")
 
 ;; -------------------- GLSL -----------------------
 (use-package glsl-mode
