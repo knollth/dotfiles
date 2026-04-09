@@ -4,8 +4,9 @@
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 (setq inhibit-startup-screen t)
-
 (repeat-mode 1)
+
+(setq tramp-use-connection-share nil)
 
 ;; UI Basics
 (setq ring-bell-function 'ignore)
@@ -55,6 +56,9 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
+(use-package project
+  :straight (:type built-in))
+
 ;; ** Modules ** 
 (add-to-list 'load-path "~/.emacs.d/modules")
 (require 'setup-org)
@@ -70,7 +74,6 @@
   :ensure t
   :hook (after-init . global-clipetty-mode))
 
-(setq auto-revert-use-notify t)
 (setq auto-revert-avoid-polling t)
 
 (use-package vterm)
@@ -160,7 +163,7 @@
         tmr-notification-urgency 'normal
         tmr-description-list 'tmr-description-history))
 
-(use-package enlight
+(use-package enlight ;; dashboard
   :init
   (setopt initial-buffer-choice #'enlight)
   :custom
@@ -171,11 +174,15 @@
     (enlight-menu
      '(("Org Mode"
 	("Org-Agenda (current day)" (org-agenda nil "a") "a")
-	("Inbox" (find-file "~/org/agenda/inbox.org") "i"))
-       ("Downloads"
-	("Transmission" transmission "t")
-	("Downloads folder" (dired "~/Downloads") "d"))
+	("Inbox" (find-file "/ssh:hetzner-deb:org/agenda/inbox.org") "i"))
+       ("Uni"
+	("uni-jump" (my/uni-jump my/uni-file-regex) "u")
+	("uni-dirs" (my/uni-dirs) "d"))
        ("Other"
 	("Projects" project-switch-project "p")))))))
+
+(global-set-key (kbd "C-c u") (lambda () (interactive) (my/uni-jump my/uni-file-regex))
+		)
+(global-set-key (kbd "C-c U") #'my/uni-dirs)
 
 
