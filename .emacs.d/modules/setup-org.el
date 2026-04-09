@@ -32,7 +32,8 @@
   (org-edit-src-content-indentation 1)
   (org-export-babel-evaluate nil)
   (org-directory "~/org")
-  (org-agenda-files '("~/org/agenda"))
+  (org-agenda-files '("~/org/agenda"
+		      "/ssh:hetzner-deb:~/org/agenda/inbox.org"))
   (org-agenda-include-diary t)
   (org-refile-targets '((org-agenda-files :maxlevel . 1)))
   (org-refile-use-outline-path 'file)
@@ -60,25 +61,14 @@
 	   "* %?\n%^T"
 	   :prepend t)))
   (setq org-agenda-custom-commands
-        '(;; Main dashboard: what's on your plate
-          ("d" "Dashboard"
+        '(("d" "Dashboard"
            ((agenda "" ((org-agenda-span 3)
                         (org-agenda-start-on-weekday nil)))
             (todo "STUCK"
                   ((org-agenda-overriding-header "Stuck - Need to revisit")))
             (todo "TODO"
                   ((org-agenda-overriding-header "Inbox")
-                   (org-agenda-files '("~/org/agenda/inbox.org"))))))
-          ("m" "Math Dashboard"
-           ((todo "STUCK"
-                  ((org-agenda-overriding-header "Stuck Problems")
-                   (org-agenda-files '("~/org/agenda/math.org"))))
-            (todo "TODO"
-                  ((org-agenda-overriding-header "Problems Queue")
-                   (org-agenda-files '("~/org/agenda/math.org"))))
-            (tags "CLOSED>=\"<-7d>\""
-                  ((org-agenda-overriding-header "Completed This Week")
-                   (org-agenda-files '("~/org/agenda/math.org"))))))))
+                   (org-agenda-files '("~/org/agenda/inbox.org"))))))))
   
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -96,7 +86,6 @@
   (add-hook 'org-babel-after-execute-hook #'org-display-inline-images)
   
   (setq org-babel-python-command "python3")
-  ;; == Babel Defaults ==
   (setq org-babel-default-header-args
         '((:session . "none")
           (:results . "replace")
