@@ -1,16 +1,16 @@
-// spawn-sh-at-startup "/home/tom/.scripts/wl-autostart.sh"
-// spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=GNOME"
 // spawn-at-startup "kanshi"
-//spawn-at-startup "mako"
 spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
 spawn-at-startup "systemctl" "--user" "start" "graphical-session.target"
 
-spawn-at-startup "ashell"
 spawn-at-startup "wlsunset -l 50.1 latitude -L 14.4"
-//spawn-sh-at-startup "swaybg --image ~/Pictures/Backgrounds/everforest/close_up/sakura.png --mode fill &"
 spawn-sh-at-startup "darkman run"
-
 hotkey-overlay { skip-at-startup; }
+
+window-rule {
+    match app-id=r#"^jetbrains-"#
+    draw-border-with-background false
+    open-maximized true   
+}
 
 window-rule {
     match app-id=r#"gamescope"#
