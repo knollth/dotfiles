@@ -26,6 +26,8 @@ alias cspush="rclone sync $RCLONE_FLAGS $UNI/$CURSEM/ drive:/Studium/$CURSEM"
 alias cspull="rclone sync $RCLONE_FLAGS drive:/Studium/$CURSEM $UNI/$CURSEM"
 alias cscheck="rclone check $RCLONE_FLAGS $UNI/$CURSEM drive:/Studium/$CURSEM"
 
+alias idea-open="/opt/idea-IU-261.22158.277/bin/idea nosplash"
+
 alias initass='cp -r ../Template ./Ausarbeitung'
 alias hxass='hx ./Ausarbeitung/main.typ'
 
