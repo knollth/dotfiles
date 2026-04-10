@@ -12,11 +12,28 @@
               ("C-c h" . eglot-inlay-hints-mode))
   :hook (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1))))  ; default aus
 
-(use-package apheleia ; auto-format
+;; apheleia does auto-format
+(use-package apheleia 
   :hook ((tuareg-mode . apheleia-mode)
 	 (python-ts-mode . apheleia-mode)))
 
+;; ------------------ Config Languages --------------
+
+(use-package nix-mode
+  :init
+  (my/eglot-add-server 'nix-mode '("nil"))
+  :mode "\\.nix\\'"
+  :hook ((nix-mode . eglot-ensure)
+         (nix-mode . apheleia-mode)))
+
 (use-package kdl-mode)
+
+(use-package yaml-pro
+  :mode ("\\.ya?ml\\'" . yaml-ts-mode)
+  :hook (yaml-ts-mode . yaml-pro-ts-mode)
+  :init
+  (add-to-list 'treesit-language-source-alist
+               '(yaml "https://github.com/tree-sitter-grammars/tree-sitter-yaml")))
 
 ;; -------------------- Janet -----------------------
 (use-package janet-ts-mode
