@@ -20,11 +20,8 @@
 ;; ------------------ Config Languages --------------
 
 (use-package nix-mode
-  :init
-  (my/eglot-add-server 'nix-mode '("nil"))
   :mode "\\.nix\\'"
-  :hook ((nix-mode . eglot-ensure)
-         (nix-mode . apheleia-mode)))
+  :hook ((nix-mode . apheleia-mode)))
 
 (use-package kdl-mode)
 

@@ -4,7 +4,7 @@
 (defun my/inbox ()
   "Open the org inbox"
   (interactive)
-  (find-file "/ssh:hetzner-deb:org/agenda/inbox.org"))
+  (find-file "/ssh:rpi-cm4:org/agenda/inbox.org"))
 (global-set-key (kbd "C-c i") 'my/inbox)
 
 (defun my/dired-dots ()

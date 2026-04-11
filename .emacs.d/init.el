@@ -174,7 +174,7 @@
     (enlight-menu
      '(("Org Mode"
 	("Org-Agenda (current day)" (org-agenda nil "a") "a")
-	("Inbox" (find-file "/ssh:hetzner-deb:org/agenda/inbox.org") "i"))
+	("Inbox" (find-file "/ssh:rpi-cm4:org/agenda/inbox.org") "i"))
        ("Uni"
 	("uni-jump" (my/uni-jump my/uni-file-regex) "u")
 	("uni-dirs" (my/uni-dirs) "d"))

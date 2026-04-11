@@ -32,8 +32,8 @@
   (org-edit-src-content-indentation 1)
   (org-export-babel-evaluate nil)
   (org-directory "~/org")
-  (org-agenda-files '("~/org/agenda"
-		      "/ssh:hetzner-deb:~/org/agenda/inbox.org"))
+  (org-agenda-files '("/ssh:rpi-cm4:~/org/agenda"))
+		      
   (org-agenda-include-diary t)
   (org-refile-targets '((org-agenda-files :maxlevel . 1)))
   (org-refile-use-outline-path 'file)
