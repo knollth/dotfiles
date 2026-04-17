@@ -1,0 +1,10 @@
+# ~/.config/kanshi/config
+
+profile dual {
+    output "BOE NE135A1M-NY1 Unknown"    scale 2 mode 2880x1920@120 position 560,1440
+    output "PNP(AOC) AG241QG4 0x0000015F" mode 2560x1440@120 position 0,0
+}
+
+profile laptop {
+    output "BOE NE135A1M-NY1 Unknown" scale 2 mode 2880x1920@120 position 0,0
+}
