@@ -1,6 +1,5 @@
 ;;; -*- lexical-binding: t; -*-
 
-
 (defun my/eglot-add-server (mode cmd)
   "Add MODE -> CMD mapping to eglot-server-programs after eglot loads."
   (with-eval-after-load 'eglot
@@ -17,7 +16,7 @@
   :hook ((tuareg-mode . apheleia-mode)
 	 (python-ts-mode . apheleia-mode)))
 
-;; ------------------ Config Languages --------------
+;; ------------------ Configuration Languages --------------
 
 (use-package nix-mode
   :mode "\\.nix\\'"
@@ -42,7 +41,6 @@
 ;; -------------------- Java -----------------------
 (use-package eglot-java
   :straight (:host github :repo "yveszoundi/eglot-java")
-  :demand t
   :hook (java-ts-mode . eglot-java-mode))  ;; eglot-java-mode calls eglot-ensure internally
 
 (use-package java-ts-mode
