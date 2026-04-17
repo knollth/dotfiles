@@ -36,6 +36,9 @@
 (add-hook 'conf-mode-hook #'display-line-numbers-mode)  
 (add-hook 'dired-mode-hook #'display-line-numbers-mode)
 
+(setq auto-revert-avoid-polling t)
+
+;; Straight bootstrap and Package Definitions
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -56,41 +59,35 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
-(use-package project
-  :straight (:type built-in))
+(use-package project :demand t)
 
 ;; ** Modules ** 
 (add-to-list 'load-path "~/.emacs.d/modules")
-(require 'setup-org)
-(require 'languages)
 (require 'setup-meow)
+(require 'completion)
+(require 'setup-org)
 (require 'shortcuts)
 (require 'setup-theme)
 (require 'setup-fonts)
 (require 'setup-mail)
 (require 'setup-git)
-(require 'completion)
+(require 'languages)
+
+(use-package substitute
+  :ensure t
+  :config
+  (setq substitute-fixed-letter-case t)
+  (add-hook 'substitute-post-replace-functions #'substitute-report-operation)
+  (define-key global-map (kbd "C-c s") #'substitute-prefix-map))
+
 
 (use-package clipetty
+  ;; allows copypasting when using emacs in terminal mode
   :ensure t
   :hook (after-init . global-clipetty-mode))
 
-(setq auto-revert-avoid-polling t)
-
-(use-package eat
-  :hook (eshell-load . eat-eshell-mode))
-
-(use-package pdf-tools
-  :mode ("\\.pdf\\'" . pdf-view-mode)
-  :hook (pdf-view-mode . auto-revert-mode)
-  :config
-  (pdf-tools-install))  ; compiles the epdfinfo server
-
-(add-to-list 'display-buffer-alist
-             '("\\.pdf\\'"
-               (display-buffer-reuse-window display-buffer-in-direction)
-               (direction . right)
-               (window-height . 0.5)))
+(use-package ghostel
+  :ensure t)
 
 (use-package tmr
   :config
@@ -116,8 +113,3 @@
 	("uni-dirs" (my/uni-dirs) "d"))
        ("Other"
 	("Projects" project-switch-project "p")))))))
-
-
-
-(use-package ghostel
-  :ensure t)
