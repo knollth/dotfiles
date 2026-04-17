@@ -76,7 +76,6 @@
 
 (setq auto-revert-avoid-polling t)
 
-(use-package vterm)
 
 (use-package eat
   :hook (eshell-load . eat-eshell-mode))
@@ -186,3 +185,5 @@
 (global-set-key (kbd "C-c U") #'my/uni-dirs)
 
 
+(use-package ghostel
+  :ensure t)
