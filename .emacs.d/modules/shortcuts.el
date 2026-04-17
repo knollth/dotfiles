@@ -1,78 +1,41 @@
-(defvar my/shortcuts-enabled t)
+;;; -*- lexical-binding: t; -*-
 
 
-(defun my/inbox ()
-  "Open the org inbox"
-  (interactive)
-  (find-file "/ssh:rpi-cm4:org/agenda/inbox.org"))
-(global-set-key (kbd "C-c i") 'my/inbox)
+(defun my/inbox    () (interactive) (find-file "/ssh:rpi-cm4:org/agenda/inbox.org"))
+(defun my/dired-dots  () (interactive) (dired "~/dotfiles"))
+(defun my/dired-emacsd () (interactive) (dired "~/dotfiles/.emacs.d"))
+(defun my/dired-org   () (interactive) (dired "~/org"))
 
-(defun my/dired-dots ()
-  "Open the dotfiles-directory (~/.emacs.d/) in Dired."
-  (interactive)
-  (dired "~/dotfiles"))
 (global-set-key (kbd "C-c d") 'my/dired-dots)
-
-(defun my/dired-emacsd ()
-  "Open the emacs.d directory (~/dotfiles/.emacs.d/) in Dired."
-  (interactive)
-  (dired "~/dotfiles/.emacs.d"))
-
 (global-set-key (kbd "C-c e") 'my/dired-emacsd)
-
-(defun my/dired-org ()
-  "Open the org directory (~/org) in Dired."
-  (interactive)
-  (dired "~/org"))
 (global-set-key (kbd "C-c o") 'my/dired-org)
 
-(defcustom my/uni-file-regex "\\.\\(typ\\|pdf\\|org\\|c\\|h\\|py\\|rs\\|ml\\|hs\\|java\\|js\\|ts\\)$"
-  "Default regex for `my/uni-jump'.")
+;; --- Uni Folder Navigation
 
-(defun my/uni-jump (regex)
-  "Jump to a uni folder or file matching REGEX."
-  (interactive (list (read-string "File regex: " my/uni-file-regex)))
-  (let* ((base (expand-file-name "SS26" (getenv "UNI")))
-         (all (directory-files-recursively
-               base regex t
-               (lambda (d) (not (string-prefix-p "." (file-name-nondirectory d))))))
-         (pick (completing-read "Uni: " (mapcar (lambda (p) (file-relative-name p base)) all)))
-         (target (expand-file-name pick base)))
-    (funcall (if (file-directory-p target) #'dired #'find-file) target)))
+(defvar my/uni-dir (expand-file-name "SS26" (getenv "UNI"))
+  "Base directory for uni navigation.")
+(defconst my/uni-file-regex
+  "\\.\\(typ\\|pdf\\|org\\|c\\|h\\|py\\|rs\\|ml\\|hs\\|java\\|js\\|ts\\)$")
+
+(defun my/uni--pick (regex prompt)
+  "completing-read over files/dirs under `my/uni-dir' matching REGEX."
+  (let* ((skip (lambda (d) (not (string-prefix-p "." (file-name-nondirectory d)))))
+         (hits (directory-files-recursively my/uni-dir regex t skip))
+         (pick (completing-read prompt (mapcar (lambda (p) (file-relative-name p my/uni-dir)) hits))))
+    (expand-file-name pick my/uni-dir)))
+
+(defun my/uni-jump ()
+  "Jump to a uni file."
+  (interactive)
+  (find-file (my/uni--pick my/uni-file-regex "Uni file: ")))
 
 (defun my/uni-dirs ()
-  "Jump to a uni folder."
+  "Jump to a uni directory."
   (interactive)
-  (let* ((base (expand-file-name "SS26" (getenv "UNI")))
-         (dirs (directory-files-recursively
-                base "" t
-                (lambda (d) (not (string-prefix-p "." (file-name-nondirectory d))))))
-         (pick (completing-read "Uni: " (mapcar (lambda (p) (file-relative-name p base)) dirs))))
-    (dired (expand-file-name pick base))))
+  (dired (my/uni--pick "" "Uni dir: ")))
 
-(global-set-key (kbd "C-c u") (lambda () (interactive) (my/uni-jump my/uni-file-regex)))
-(global-set-key (kbd "C-c U") #'my/uni-dirs)
+(keymap-global-set "C-c u" #'my/uni-jump)
+(keymap-global-set "C-c U" #'my/uni-dirs)
 
 
-(defun my/open-pdf-zathura ()
-  "Select PDF via consult, open in Zathura."
-  (interactive)
-  (let* ((parent (file-name-directory (directory-file-name default-directory)))
-         (pdfs (append
-                (mapcar (lambda (f) (propertize f 'consult--prefix "current: "))
-                        (directory-files default-directory t "\\.pdf\\'" t))
-                (mapcar (lambda (f) (propertize f 'consult--prefix "parent:  "))
-                        (directory-files parent t "\\.pdf\\'" t))))
-         (selected (consult--read pdfs
-                                  :prompt "PDF: "
-                                  :require-match t
-                                  :sort nil
-                                  :group (lambda (cand transform)
-                                           (if transform cand
-                                             (get-text-property 0 'consult--prefix cand)))))
-	 )
-    (call-process-shell-command
-     (format "zathura %s &" (shell-quote-argument selected)) nil 0)))
-
-(keymap-global-set "C-c z" #'my/open-pdf-zathura)
 (provide 'shortcuts)
