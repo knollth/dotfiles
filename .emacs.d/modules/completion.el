@@ -7,8 +7,6 @@
   :init
   (vertico-mode))
 
-
-
 (use-package consult
   :bind (("C-s" . consult-line)
          ("C-x b" . consult-buffer)
