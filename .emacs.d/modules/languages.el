@@ -91,9 +91,11 @@
          ("\\.h\\'" . c-ts-mode)
          ("\\.cpp\\'" . c++-ts-mode)   
          ("\\.hpp\\'" . c++-ts-mode))  
-  :custom (c-ts-mode-indent-offset 4)
-  :hook ((c-ts-mode . eglot-ensure)
-         (c++-ts-mode . eglot-ensure)))  
+  :custom
+  (c-ts-mode-indent-offset 8)
+  (c-ts-mode-indent-style 'linux)
+)
+
 
 ;; -------------------- Typst  -----------------------
 (defun my/typst-math-p ()
