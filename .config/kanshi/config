@@ -1,5 +1,35 @@
 # ~/.config/kanshi/config
 
+profile triple {
+    output "Samsung Electric Company S24C450 HTMF200423" {
+        mode 1920x1080@60
+        transform 90
+        position 0,0
+    }
+    output "PNP(AOC) AG241QG4 0x0000015F" {
+        mode 2560x1440@120
+        position 1080,0
+    }
+    output "BOE NE135A1M-NY1 Unknown" {
+        scale 2 
+        mode 2880x1920@120 
+        position 1640,1440
+    }
+}
+
+profile dual_no_pnp {
+    output "Samsung Electric Company S24C450 HTMF200423" {
+        mode 1920x1080@60
+        transform 90
+        position 0,0
+    }
+    output "BOE NE135A1M-NY1 Unknown" {
+        scale 2
+        mode 2880x1920@120
+        position 1080,0
+    }
+}
+
 profile dual {
     output "BOE NE135A1M-NY1 Unknown"    scale 2 mode 2880x1920@120 position 560,1440
     output "PNP(AOC) AG241QG4 0x0000015F" mode 2560x1440@120 position 0,0

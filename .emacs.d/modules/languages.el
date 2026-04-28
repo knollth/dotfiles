@@ -15,7 +15,6 @@
 (use-package apheleia 
   :hook ((tuareg-mode . apheleia-mode)
 	 (python-ts-mode . apheleia-mode)))
-
 ;; ------------------ Configuration Languages --------------
 
 (use-package nix-mode
