@@ -99,36 +99,6 @@
         '((:results . "value"))))
   
 
-(use-package org-roam
-  :ensure t
-  :custom
-  (org-roam-directory (file-truename "~/org/wiki"))
-  (org-roam-db-autosync-mode t)
-  (org-roam-node-display-template
-   (concat "${title:*} "
-	   (propertize "${tags:30}" 'face 'org-tag)))
-  
-  (org-roam-capture-templates
-   '(("c" "Concept" plain
-      "* Definition\n%?\n\n* Key Ideas\n\n* Examples\n\n* See Also\n"
-      :target (file+head "${slug}.org"
-                         "#+title: ${title}\n#+filetags: :concept:\n")
-      :unnarrowed t)
-     
-     ("s" "Source/Textbook" plain
-      "* Overview\n%?\n\n* Chapters\n\n* My Notes\n"
-      :target (file+head "sources/${slug}.org"
-                         "#+title: ${title}\n#+filetags: :source:\n")
-      :unnarrowed t)))
-  
-  :bind (("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n c" . org-roam-capture)
-         ("C-c n d" . org-roam-dailies-capture-today))
-  :config
-  (org-roam-db-autosync-mode 1))
-
 (require 'ox-md)
 
 (use-package auctex
