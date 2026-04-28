@@ -96,6 +96,17 @@
         tmr-notification-urgency 'normal
         tmr-description-list 'tmr-description-history))
 
+(use-package denote
+  :straight (:type git :host github :repo "protesilaos/denote")
+  :custom
+  (denote-directory (expand-file-name "~/Notes")))
+
+(use-package consult-denote
+  :straight (:type git :host github :repo "protesilaos/consult-denote")
+  :bind ("C-c n f" . consult-denote-find) 
+  :config
+  (consult-denote-mode 1))
+
 (use-package enlight ;; dashboard
   :init
   (setopt initial-buffer-choice #'enlight)
