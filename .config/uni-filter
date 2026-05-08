@@ -1,0 +1,49 @@
+# ~/.config/rclone/uni-filter.txt
+# Build artifacts (regeneratable from sources next to them)
+- **/out/**
+- **/bin/**
+- **/target/**
+- **/_build/**
+- **/zig-out/**
+- **/.zig-cache/**
+- **/node_modules/**
+- **/__pycache__/**
+- *.class
+- *.cmi
+- *.cmo
+- *.o
+- a.out
+
+# LaTeX/Typst auxiliary files
+- *.aux
+- *.fdb_latexmk
+- *.fls
+- *.toc
+- *.synctex.gz
+- *.bbl
+- *.blg
+- *.lof
+- *.lot
+
+# Editor/IDE state
+- .idea/**
+- *.iml
+- .vscode/**
+- *.swp
+- *.swo
+- .#*
+- \#*\#
+
+# OS detritus
+- .DS_Store
+- __MACOSX/**
+- Thumbs.db
+
+# Version control / dependency state (you said keep .git, but venvs are usually skippable)
+- **/.venv/**
+- **/.direnv/**
+- **/.cargo/**
+
+# Rsync/rclone partials (in case anything died mid-sync)
+- *.partial
+- .~tmp~/**

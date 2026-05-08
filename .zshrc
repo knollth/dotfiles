@@ -26,8 +26,13 @@ alias cspush="rclone sync $RCLONE_FLAGS $UNI/$CURSEM/ drive:/Studium/$CURSEM"
 alias cspull="rclone sync $RCLONE_FLAGS drive:/Studium/$CURSEM $UNI/$CURSEM"
 alias cscheck="rclone check $RCLONE_FLAGS $UNI/$CURSEM drive:/Studium/$CURSEM"
 
-alias mount-pi4='sudo mount -t nfs 192.168.8.10:/mnt/hdd-data /media/pi4'
-alias umount-pi4='sudo umount /media/pi4'
+alias mount-media='sudo mount -t nfs 192.168.8.10:/mnt/hdd-data/media /media/nas-media'
+alias umount-media='sudo umount /media/nas-media'
+
+alias mount-archive='sudo mount -t nfs 192.168.8.10:/mnt/hdd-data/archive /media/nas-archive'
+alias umount-archive='sudo umount /media/nas-archive'
+
+
 
 alias idea-open="/opt/idea-IU-261.22158.277/bin/idea nosplash"
 

@@ -89,6 +89,8 @@
 (use-package ghostel
   :ensure t)
 
+(use-package password-store)
+
 (use-package tmr
   :config
   (define-key global-map (kbd "C-c t") #'tmr-prefix-map)
@@ -107,9 +109,20 @@
   :config
   (consult-denote-mode 1))
 
-(use-package enlight ;; dashboard
+(use-package beframe
   :init
-  (setopt initial-buffer-choice #'enlight)
+  (setq beframe-global-buffers '("*scratch*" "*Messages*" "*Backtrace*"
+                                 "*Org Agenda*"))
+  :bind
+  (("C-x B" . beframe-switch-buffer)         ; scoped switcher
+   ("C-x f" . beframe-switch-buffer-in-frame) ; pull from another frame
+   ("C-c b a" . beframe-assume-buffer)
+   ("C-c b u" . beframe-unassume-buffer))
+  :config
+  (beframe-mode 1))
+
+
+(use-package enlight ;; dashboard
   :custom
   (enlight-content
    (concat
