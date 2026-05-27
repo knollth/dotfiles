@@ -1,0 +1,13 @@
+# ~/.config/rclone/org-filter
+- **/.git/**
+- **/.venv/**
+- **/.#*
+- **/#*#
+- **/*.tex
+- **/*.pdf
+- **/*.aux
+- **/*.log
+- **/*.out
+- **/*.fls
+- **/*.fdb_latexmk
+- **/*.synctex.gz
