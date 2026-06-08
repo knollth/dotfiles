@@ -10,29 +10,14 @@ bashcompinit
 source <(fzf --zsh)
 eval "$(starship init zsh)"
 
-UNI_LOCAL="$HOME/uni"
-RCLONE_FLAGS="--exclude '**/.git/**' --exclude '**/.venv/**' --fast-list -v"
+alias mount-media='sudo mount -t nfs 192.168.8.10:/mnt/hdd-data/media /mnt/nas-media'
+alias umount-media='sudo umount /mnt/nas-media'
 
-alias uni="cd $UNI && yazi"
-alias unidb="cd $UNI && ls && distrobox enter $CURSEM"
-alias unipush="rclone sync $RCLONE_FLAGS $UNI/ drive:/Studium"
-alias unipull="rclone sync $RCLONE_FLAGS drive:/Studium $UNI"
-alias unicheck="rclone check $RCLONE_FLAGS $UNI/ drive:/Studium/"
+alias mount-archive='sudo mount -t nfs 192.168.8.10:/mnt/hdd-data/archive /mnt/nas-archive'
+alias umount-archive='sudo umount /mnt/nas-archive'
 
-CURSEM="WS25-26"
-alias cs="cd $UNI/$CURSEM && yazi"
-alias csdb="cd $UNI/$CURSEM && ls && distrobox enter $CURSEM"
-alias cspush="rclone sync $RCLONE_FLAGS $UNI/$CURSEM/ drive:/Studium/$CURSEM"
-alias cspull="rclone sync $RCLONE_FLAGS drive:/Studium/$CURSEM $UNI/$CURSEM"
-alias cscheck="rclone check $RCLONE_FLAGS $UNI/$CURSEM drive:/Studium/$CURSEM"
-
-alias mount-media='sudo mount -t nfs 192.168.8.10:/mnt/hdd-data/media /media/nas-media'
-alias umount-media='sudo umount /media/nas-media'
-
-alias mount-archive='sudo mount -t nfs 192.168.8.10:/mnt/hdd-data/archive /media/nas-archive'
-alias umount-archive='sudo umount /media/nas-archive'
-
-
+alias mount-personal='sudo mount -t nfs 192.168.8.10:/mnt/ssd-personal /mnt/nas-personal'
+alias umount-personal='sudo umount /mnt/nas-personal'
 
 alias idea-open="/opt/idea-IU-261.22158.277/bin/idea nosplash"
 
@@ -43,15 +28,10 @@ alias zath="zathura --fork"
 alias dbe="distrobox enter"
 alias lsa="ls -a"
 
-alias vim=$EDITOR
 alias nvim=$EDITOR
-
 alias mpvcache='mpv --cache=yes --cache-secs=99999 --demuxer-max-bytes=2G --demuxer-max-back-bytes=1G --keep-open=always --idle=yes'
 
 eval $(keychain --eval --quiet)
-
-# opencode
-export PATH=/home/tom/.opencode/bin:$PATH
 
 vterm_printf() {
     if [ -n "$TMUX" ] \
